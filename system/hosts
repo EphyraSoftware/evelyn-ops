@@ -1,0 +1,7 @@
+[control]
+kube-master.local
+
+[slave]
+kube-slave-1.local
+kube-slave-2.local
+

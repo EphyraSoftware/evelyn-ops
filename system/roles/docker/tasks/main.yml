@@ -1,0 +1,3 @@
+---
+- name: Use the get-docker script to install Docker
+  script: get-docker.sh

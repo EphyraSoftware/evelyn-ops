@@ -1,0 +1,6 @@
+---
+- name: Set up a kubernetes master node
+  hosts: master
+  remote_user: root
+  roles:
+    - docker

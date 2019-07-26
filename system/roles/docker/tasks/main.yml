@@ -1,3 +1,16 @@
 ---
-- name: Use the get-docker script to install Docker
+- name: 'Get docker info'
+  shell: docker info
+  register: docker_info
+  ignore_errors: True
+
+- name: 'Use the get-docker script to install Docker'
+  when: docker_info.rc != 0
   script: get-docker.sh
+  environment:
+    VERSION: '17.12.1-ce'
+
+- name: 'Run Docker on startup'
+  systemd:
+    state: started
+    name: docker

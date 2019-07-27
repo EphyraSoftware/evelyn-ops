@@ -10,5 +10,4 @@
   remote_user: root
   roles:
     - docker
-    - docker-swarm
     - docker-swarm-worker

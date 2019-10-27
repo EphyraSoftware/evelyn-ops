@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: greenmail
+  labels:
+    app: greenmail
+spec:
+  type: NodePort
+  ports:
+  - name: smtp
+    port: 3025
+  - name: pop3
+    port: 3110
+  selector:
+    app: greenmail
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greenmail
+  labels:
+    app: greenmail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: greenmail
+  template:
+    metadata:
+      labels:
+        app: greenmail
+    spec:
+      containers:
+      - name: greenmail
+        image: greenmail/standalone:1.5.10
+        env:
+        - name: GREENMAIL_OPTS
+          value: -Dgreenmail.setup.test.all -Dgreenmail.hostname=0.0.0.0 -Dgreenmail.verbose -Dgreenmail.users=evelynmailer:passwd@localhost
+        - name: JAVA_OPTS
+          value: -Djava.net.preferIPv4Stack=true -Xmx512m
+        ports:
+        - name: smtp
+          containerPort: 3025
+        - name: pop3
+          containerPort: 3110
+        - name: imap
+          containerPort: 3143
+        - name: smtps
+          containerPort: 3465
+        - name: imaps
+          containerPort: 3993
+        - name: pop3s
+          containerPort: 3995

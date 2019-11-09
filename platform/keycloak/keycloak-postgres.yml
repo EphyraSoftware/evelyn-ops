@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: keycloak-postgres-config
+  name: keycloak-pg-config
   labels:
-    app: keycloak-postgres
+    app: keycloak-pg
 data:
   POSTGRES_DB: keycloak
   POSTGRES_USER: keycloak
@@ -12,34 +12,34 @@ data:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: keycloak-postgres
+  name: keycloak-pg
 spec:
-  serviceName: "keycloak-postgres"
+  serviceName: "keycloak-pg"
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak-postgres
+      app: keycloak-pg
   template:
     metadata:
       labels:
-        app: keycloak-postgres
+        app: keycloak-pg
     spec:
       containers:
-      - name: keycloak-postgres
+      - name: keycloak-pg
         image: postgres:12.0-alpine
         envFrom:
           - configMapRef:
-              name: keycloak-postgres-config
+              name: keycloak-pg-config
         ports:
-        - name: postgres
+        - name: pg
           containerPort: 5432
         volumeMounts:
-        - name: keycloak-postgres-data-pvc
+        - name: keycloak-pg-data-pvc
           mountPath: /var/lib/postgresql/data
-          subPath: postgres
+          subPath: pg
   volumeClaimTemplates:
   - metadata:
-      name: keycloak-postgres-data-pvc
+      name: keycloak-pg-data-pvc
     spec:
       storageClassName: rook-ceph-block
       accessModes:

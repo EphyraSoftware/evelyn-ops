@@ -24,6 +24,8 @@ spec:
   ports:
   - name: keycloak
     port: 8080
+  - name: keycloak-tls
+    port: 8443
   selector:
     app: keycloak
 ---
@@ -51,3 +53,13 @@ spec:
         ports:
         - name: keycloak
           containerPort: 8080
+        - name: keycloak-tls
+          containerPort: 8443
+        volumeMounts:
+          - name: keycloak-tls
+            mountPath: "/etc/x509/https"
+            readOnly: true
+      volumes:
+        - name: keycloak-tls
+          secret:
+            secretName: keycloak-tls

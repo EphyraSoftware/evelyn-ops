@@ -10,10 +10,12 @@ docker run --name bind -d --restart=always --publish 53:53/tcp --publish 53:53/u
 # Add an address record for your kubernetes nodes
 # - master.kube.evelyn.internal
 # - slave.kube.evelyn.internal
+# - app.evelyn.internal (to host locally)
 
 # Add alias records for a Kubernetes node which host applications.
 # - keycloak.evelyn.internal
 # - rabbitmq-console.evelyn.internal
+# - service.evelyn.internal
 
 # Nothing will be visible until apply changes has been clicked. This is a tiny refresh icon in the top right of the top
 # level page. :)

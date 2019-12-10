@@ -8,7 +8,7 @@ git checkout v0.2.1
 # Set storageClass to be rook-ceph-block
 # Set ui.enabled to be true, this is a security issue but I'm working on a private network.
 
-helm install --name vault . --namespace evelyn-platform
+helm install vault . --namespace evelyn-platform
 
 # Wait for the vault container to be in the running state.
 

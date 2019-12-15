@@ -5,7 +5,7 @@ metadata:
   labels:
     app: mongodb
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - name: data
     port: 27017

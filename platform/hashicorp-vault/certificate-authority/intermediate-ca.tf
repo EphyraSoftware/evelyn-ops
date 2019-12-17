@@ -3,8 +3,8 @@ resource "vault_mount" "intermediate-ca" {
   type        = "pki"
   description = "Container for the intermediate CA"
 
-  default_lease_ttl_seconds = 3600
-  max_lease_ttl_seconds = 87600
+  default_lease_ttl_seconds = 2592000 # 30 days
+  max_lease_ttl_seconds = 157680000 # 5 years
 }
 
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate-ca" {
@@ -28,10 +28,22 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate-ca" {
   exclude_cn_from_sans = true
   ou = "Evelyn"
   organization = "EphyraSoftware"
+  ttl = "43800h" # 5 years
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate-ca" {
   backend = vault_mount.intermediate-ca.path
 
   certificate = vault_pki_secret_backend_root_sign_intermediate.intermediate-ca.certificate
+}
+
+resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
+  backend              = vault_mount.intermediate-ca.path
+  issuing_certificates = ["http://127.0.0.1:8200/v1/pki/ca"]
+}
+
+resource "vault_pki_secret_backend_crl_config" "crl_config_int" {
+  backend   = vault_mount.intermediate-ca.path
+  expiry    = "43800h"
+  disable   = false
 }

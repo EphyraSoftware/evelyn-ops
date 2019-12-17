@@ -3,8 +3,8 @@ resource "vault_mount" "root-ca" {
   type        = "pki"
   description = "Container for the root CA"
 
-  default_lease_ttl_seconds = 3600
-  max_lease_ttl_seconds = 87600
+  default_lease_ttl_seconds = 315360000 # 10 years
+  max_lease_ttl_seconds = 315360000 # 10 years
 }
 
 resource "vault_pki_secret_backend_root_cert" "root-ca" {
@@ -14,7 +14,7 @@ resource "vault_pki_secret_backend_root_cert" "root-ca" {
 
   type = "internal"
   common_name = "evelyn.internal Root CA"
-  ttl = "315360000"
+  ttl = "315360000" # 10 years
   format = "pem"
   private_key_format = "der"
   key_type = "rsa"
@@ -22,4 +22,15 @@ resource "vault_pki_secret_backend_root_cert" "root-ca" {
   exclude_cn_from_sans = true
   ou = "Evelyn"
   organization = "EphyraSoftware"
+}
+
+resource "vault_pki_secret_backend_config_urls" "config_urls" {
+  backend              = vault_mount.root-ca.path
+  issuing_certificates = ["http://127.0.0.1:8200/v1/pki/ca"]
+}
+
+resource "vault_pki_secret_backend_crl_config" "crl_config" {
+  backend   = vault_mount.root-ca.path
+  expiry    = "72h"
+  disable   = false
 }

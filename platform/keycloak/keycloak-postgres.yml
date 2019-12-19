@@ -9,6 +9,20 @@ data:
   POSTGRES_USER: keycloak
   POSTGRES_PASSWORD: password
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: keycloak-pg
+spec:
+  type: ClusterIP
+  ports:
+    - name: keycloak-pg
+      port: 5432
+  selector:
+    app: keycloak-pg
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -26,7 +40,7 @@ spec:
     spec:
       containers:
       - name: keycloak-pg
-        image: postgres:12.0-alpine
+        image: postgres:12-alpine
         envFrom:
           - configMapRef:
               name: keycloak-pg-config

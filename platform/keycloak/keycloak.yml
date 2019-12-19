@@ -5,7 +5,7 @@ metadata:
   labels:
     app: keycloak
 data:
-  DB_ADDR: keycloak
+  DB_ADDR: postgres
   DB_PORT: '5432'
   DB_DATABASE: keycloak
   DB_USER: keycloak
@@ -26,6 +26,7 @@ spec:
     port: 8080
   - name: keycloak-tls
     port: 8443
+    nodePort: 31739
   selector:
     app: keycloak
 ---
@@ -46,7 +47,7 @@ spec:
     spec:
       containers:
       - name: keycloak
-        image: jboss/keycloak:7.0.1
+        image: jboss/keycloak:8.0.1
         envFrom:
           - configMapRef:
               name: keycloak-config

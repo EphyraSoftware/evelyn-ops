@@ -21,3 +21,13 @@ resource "keystore_pkcs12_bundle" "profile-service" {
     vault_pki_secret_backend_root_sign_intermediate.intermediate-ca.certificate
   ]
 }
+
+resource "keystore_pkcs12_bundle" "group-service" {
+  name = "group-service-keystore"
+  cert_pem = vault_pki_secret_backend_cert.certs-evelyn-group-service.certificate
+  key_pem = vault_pki_secret_backend_cert.certs-evelyn-group-service.private_key
+  ca_certs = [
+    vault_pki_secret_backend_root_cert.root-ca.certificate,
+    vault_pki_secret_backend_root_sign_intermediate.intermediate-ca.certificate
+  ]
+}

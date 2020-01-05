@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evelyn-email-service
+  namespace: evelyn-services
+  labels:
+    app: evelyn-email-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evelyn-email-service
+  template:
+    metadata:
+      labels:
+        app: evelyn-email-service
+    spec:
+      containers:
+        - name: evelyn-email-service
+          imagePullPolicy: Always
+          image: docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-email-service:dev
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: RABBITMQ_HOST
+              value: "rabbitmq.evelyn-platform"
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: MAIL_HOST
+              value: "greenmail.evelyn-platform"
+            - name: MAIL_PORT
+              value: "3025"
+            - name: MAIL_USERNAME
+              value: evelynmailer
+            - name: MAIL_PASSWORD
+              value: passwd
+            - name: MAIL_SMTP_HOST
+              value: "greenmail.evelyn-platform"
+          ports:
+            - containerPort: 5000
+      imagePullSecrets:
+        - name: ghregcred

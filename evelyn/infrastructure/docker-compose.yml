@@ -1,0 +1,109 @@
+version: '3'
+services:
+  mongo:
+    image: mongo:4.1
+    ports:
+      - 9081:27017
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.15'
+          memory: 100M
+  rabbitmq:
+    image: rabbitmq:3.7-management
+    ports:
+      - 9082:5672
+      - 6001:15672 # Management console
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.15'
+          memory: 100M
+  email:
+    # To connect from Thunderbird use
+    # address 'username@localhost'
+    # password 'username@localhost'
+    # server 'localhost'
+    # (incoming) pop3 port '3110'
+    # (outgoing) smtp port '3025'
+    image: greenmail/standalone:1.5.10
+    environment:
+      - GREENMAIL_OPTS=-Dgreenmail.setup.test.all -Dgreenmail.hostname=0.0.0.0 -Dgreenmail.verbose -Dgreenmail.users=evelynmailer:passwd@localhost
+      - JAVA_OPTS=-Djava.net.preferIPv4Stack=true -Xmx512m
+    ports:
+      - 3025:3025 # SMTP
+      - 3110:3110 # POP3
+      - 3143:3143 # IMAP
+      - 3465:3465 # SMTPS
+      - 3993:3993 # IMAPS
+      - 3995:3995 # POP3S
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 50M
+  keycloak:
+    #  -v /tmp/example-realm.json:/tmp/example-realm.json
+    image: jboss/keycloak:8.0.1
+    depends_on:
+      - postgres
+    ports:
+      - 9083:8080
+    environment:
+      DB_ADDR: postgres
+      DB_PORT: '5432'
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: nimda
+      KEYCLOAK_IMPORT: /tmp/evelyn-services-realm.json
+    volumes:
+      - ./config/evelyn-services-realm.json:/tmp/evelyn-services-realm.json
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+  postgres:
+    image: postgres:12.1
+    environment:
+      POSTGRES_DATABASE: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 50M
+  etcd:
+    image: gcr.io/etcd-development/etcd:v3.4.1
+    ports:
+      - 2379:2379
+      - 2380:2380
+    command: /usr/local/bin/etcd --name s1 --data-dir /etcd-data --listen-client-urls http://0.0.0.0:2379 --advertise-client-urls http://0.0.0.0:2379 --listen-peer-urls http://0.0.0.0:2380 --initial-advertise-peer-urls http://0.0.0.0:2380 --initial-cluster s1=http://0.0.0.0:2380 --initial-cluster-token tkn --initial-cluster-state new --log-level info --logger zap --log-outputs stderr
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      resources:
+        limits:
+          cpus: '0.05'
+          memory: 50M

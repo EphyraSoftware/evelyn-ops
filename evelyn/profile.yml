@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evelyn-profile-service
+  namespace: evelyn-services
+  labels:
+    app: evelyn-profile-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evelyn-profile-service
+  template:
+    metadata:
+      labels:
+        app: evelyn-profile-service
+    spec:
+      containers:
+        - name: evelyn-profile-service
+          imagePullPolicy: Always
+          image: docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-profile-service:dev
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: RABBITMQ_HOST
+              value: "rabbitmq.evelyn-platform"
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: MONGO_CONNECTION_URI
+              value: mongodb://mongodb.evelyn-platform:27017/
+            - name: KEYCLOAK_AUTH_URL
+              value: https://keycloak.evelyn.internal:31739/auth
+            - name: ROOT_LOG_LEVEL
+              value: debug
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: profile-service-keystore
+              mountPath: "/etc/evelyn"
+              readOnly: true
+      volumes:
+        - name: profile-service-keystore
+          secret:
+            secretName: profile-service-keystore
+      imagePullSecrets:
+        - name: ghregcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: evelyn-profile-service
+  labels:
+    app: evelyn-profile-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+  selector:
+    app: evelyn-profile-service

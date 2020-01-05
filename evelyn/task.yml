@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: evelyn-task-service
+  namespace: evelyn-services
+  labels:
+    app: evelyn-task-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: evelyn-task-service
+  template:
+    metadata:
+      labels:
+        app: evelyn-task-service
+    spec:
+      containers:
+        - name: evelyn-task-service
+          imagePullPolicy: Always
+          image: docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-task-service:dev
+          env:
+            - name: SPRING_taskS_ACTIVE
+              value: "prod"
+            - name: MONGO_CONNECTION_URI
+              value: mongodb://mongodb.evelyn-platform:27017/
+            - name: KEYCLOAK_AUTH_URL
+              value: https://keycloak.evelyn.internal:31739/auth
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: task-service-keystore
+              mountPath: "/etc/evelyn"
+              readOnly: true
+      volumes:
+        - name: task-service-keystore
+          secret:
+            secretName: task-service-keystore
+      imagePullSecrets:
+        - name: ghregcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: evelyn-task-service
+  labels:
+    app: evelyn-task-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8080
+  selector:
+    app: evelyn-task-service

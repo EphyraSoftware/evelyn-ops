@@ -1,3 +1,0 @@
----
-- name: 'Join swarm as worker'
-  shell: docker swarm join --token {{ hostvars['kube-master.local']['worker_token']['stdout'] }} kube-master.local:2377

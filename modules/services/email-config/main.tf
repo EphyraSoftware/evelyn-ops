@@ -1,6 +1,6 @@
 resource "rabbitmq_permissions" "email" {
   user = "guest"
-  vhost = rabbitmq_vhost.evelyn_vhost.name
+  vhost = var.vhost_name
 
   permissions {
     configure = ".*"
@@ -32,7 +32,7 @@ resource "rabbitmq_queue" "email" {
 
 resource "rabbitmq_binding" "email" {
   source = rabbitmq_exchange.email.name
-  vhost = rabbitmq_vhost.evelyn_vhost.name
+  vhost = var.vhost_name
   destination = rabbitmq_queue.email.name
   destination_type = "queue"
   routing_key = "none"

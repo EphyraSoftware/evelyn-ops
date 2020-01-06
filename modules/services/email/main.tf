@@ -7,23 +7,23 @@ resource "kubernetes_deployment" "email-service" {
     name = local.service_name
     namespace = var.namespace
 
-    labels {
-      app: local.service_name
+    labels = {
+      app = local.service_name
     }
   }
   spec {
     replicas = 1
 
     selector {
-      match_labels {
-        app: local.service_name
+      match_labels = {
+        app = local.service_name
       }
     }
 
     template {
       metadata {
-        labels {
-          app: local.service_name
+        labels = {
+          app = local.service_name
         }
       }
       spec {
@@ -52,12 +52,12 @@ resource "kubernetes_config_map" "email-service-config" {
     namespace = var.namespace
   }
 
-  data {
+  data = {
     SPRING_PROFILES_ACTIVE = join(",", var.spring_profiles_active)
     RABBITMQ_HOST = var.rabbitmq_host
-    RABBITMQ_PORT: var.rabbitmq_port
-    MAIL_HOST: var.mail_host
-    MAIL_PORT: var.mail_port
+    RABBITMQ_PORT = var.rabbitmq_port
+    MAIL_HOST = var.mail_host
+    MAIL_PORT = var.mail_port
     MAIL_USERNAME = var.mail_username
     MAIL_PASSWORD = var.mail_password
     MAIL_SMTP_HOST = var.mail_smtp_host

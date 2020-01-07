@@ -20,4 +20,6 @@ module "service-email" {
 
 module "service-profile" {
   source = "../../modules/services/profile"
+
+  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-profile-service:dev"
 }

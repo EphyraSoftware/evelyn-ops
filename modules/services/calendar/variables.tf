@@ -24,11 +24,11 @@ variable "image_pull_secret" {
   default = "ghregcred"
 }
 
-variable task_service_keystore_secret_name {
-  description = "The name of the secret which contains the task service keystore."
+variable calendar_service_keystore_secret_name {
+  description = "The name of the secret which contains the calendar service keystore."
   type = "string"
 
-  default = "task-service-keystore"
+  default = "calendar-service-keystore"
 }
 
 variable spring_profiles_active {
@@ -36,6 +36,20 @@ variable spring_profiles_active {
   type = list(string)
 
   default = ["prod"]
+}
+
+variable rabbitmq_host {
+  description = "The RabbitMQ host."
+  type = "string"
+
+  default = "rabbitmq.evelyn-platform"
+}
+
+variable rabbitmq_port {
+  description = "The RabbitMQ port."
+  type = "string"
+
+  default = "5672"
 }
 
 variable mongo_connection_uri {

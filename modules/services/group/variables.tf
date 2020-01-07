@@ -32,7 +32,7 @@ variable group_service_keystore_secret_name {
 }
 
 variable spring_profiles_active {
-  description = "The Spring frameworks which should be active."
+  description = "The Spring profiles which should be active."
   type = list(string)
 
   default = ["prod"]

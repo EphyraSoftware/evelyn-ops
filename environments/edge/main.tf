@@ -29,3 +29,9 @@ module "service-group" {
 
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-group-service:dev"
 }
+
+module "task-service" {
+  source = "../../modules/services/task"
+
+  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-task-service:dev"
+}

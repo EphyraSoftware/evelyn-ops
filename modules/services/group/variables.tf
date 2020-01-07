@@ -24,11 +24,11 @@ variable "image_pull_secret" {
   default = "ghregcred"
 }
 
-variable profile_service_keystore_secret_name {
-  description = "The name of the secret which contains the profile service keystore."
+variable group_service_keystore_secret_name {
+  description = "The name of the secret which contains the group service keystore."
   type = "string"
 
-  default = "profile-service-keystore"
+  default = "group-service-keystore"
 }
 
 variable spring_profiles_active {
@@ -36,20 +36,6 @@ variable spring_profiles_active {
   type = list(string)
 
   default = ["prod"]
-}
-
-variable rabbitmq_host {
-  description = "The RabbitMQ host."
-  type = "string"
-
-  default = "rabbitmq.evelyn-platform"
-}
-
-variable rabbitmq_port {
-  description = "The RabbitMQ port."
-  type = "string"
-
-  default = "5672"
 }
 
 variable mongo_connection_uri {
@@ -64,4 +50,11 @@ variable keycloak_auth_url {
   type = "string"
 
   default = "https://keycloak.evelyn.internal:31739/auth"
+}
+
+variable profile_service_base_url {
+  description = "The base URL of the profile service (with no trailing slash)."
+  type = "string"
+
+  default = "http://evelyn-group-service.evelyn-services:8080"
 }

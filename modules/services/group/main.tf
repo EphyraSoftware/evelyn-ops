@@ -1,8 +1,8 @@
 locals {
-  service_name = "evelyn-profile-service"
+  service_name = "evelyn-group-service"
 }
 
-resource "kubernetes_deployment" "profile-service" {
+resource "kubernetes_deployment" "group-service" {
   metadata {
     name = local.service_name
     namespace = var.namespace
@@ -34,7 +34,7 @@ resource "kubernetes_deployment" "profile-service" {
 
           env_from {
             config_map_ref {
-              name = kubernetes_config_map.profile-service-config.metadata[0].name
+              name = kubernetes_config_map.group-service-config.metadata[0].name
             }
           }
 
@@ -57,7 +57,7 @@ resource "kubernetes_deployment" "profile-service" {
         volume {
           name = "keystore"
           secret {
-            secret_name = var.profile_service_keystore_secret_name
+            secret_name = var.group_service_keystore_secret_name
           }
         }
       }
@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "profile-service" {
   }
 }
 
-resource "kubernetes_config_map" "profile-service-config" {
+resource "kubernetes_config_map" "group-service-config" {
   metadata {
     name = "${local.service_name}-config"
     namespace = var.namespace
@@ -73,14 +73,13 @@ resource "kubernetes_config_map" "profile-service-config" {
 
   data = {
     SPRING_PROFILES_ACTIVE = join(",", var.spring_profiles_active)
-    RABBITMQ_HOST = var.rabbitmq_host
-    RABBITMQ_PORT = var.rabbitmq_port
     MONGO_CONNECTION_URI = var.mongo_connection_uri
     KEYCLOAK_AUTH_URL = var.keycloak_auth_url
+    PROFILE_SERVICE_BASE_URL = var.profile_service_base_url
   }
 }
 
-resource "kubernetes_service" "profile-service" {
+resource "kubernetes_service" "group-service" {
   metadata {
     name = local.service_name
     namespace = var.namespace

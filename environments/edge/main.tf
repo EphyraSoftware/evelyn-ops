@@ -23,3 +23,9 @@ module "service-profile" {
 
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-profile-service:dev"
 }
+
+module "service-group" {
+  source = "../../modules/services/group"
+
+  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-group-service:dev"
+}

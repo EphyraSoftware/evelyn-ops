@@ -35,3 +35,15 @@ module "task-service" {
 
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-task-service:dev"
 }
+
+module "calendar-service" {
+  source = "../../modules/services/calendar"
+
+  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-calendar-service:dev"
+}
+
+module "web-entry-point" {
+  source = "../../modules/services/web-entry-point"
+
+  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-web-entry-point:dev"
+}

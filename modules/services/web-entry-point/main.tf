@@ -1,8 +1,8 @@
 locals {
-  service_name = "evelyn-calendar-service"
+  service_name = "evelyn-web-entry-point"
 }
 
-resource "kubernetes_deployment" "calendar-service" {
+resource "kubernetes_deployment" "web-entry-point" {
   metadata {
     name = local.service_name
     namespace = var.namespace
@@ -34,13 +34,13 @@ resource "kubernetes_deployment" "calendar-service" {
 
           env_from {
             config_map_ref {
-              name = kubernetes_config_map.calendar-service-config.metadata[0].name
+              name = kubernetes_config_map.web-entry-point-config.metadata[0].name
             }
           }
 
           port {
             name = "http"
-            container_port = 8080
+            container_port = 5000
           }
 
           volume_mount {
@@ -57,7 +57,7 @@ resource "kubernetes_deployment" "calendar-service" {
         volume {
           name = "keystore"
           secret {
-            secret_name = var.calendar_service_keystore_secret_name
+            secret_name = var.web_entry_point_keystore_secret_name
           }
         }
       }
@@ -65,7 +65,7 @@ resource "kubernetes_deployment" "calendar-service" {
   }
 }
 
-resource "kubernetes_config_map" "calendar-service-config" {
+resource "kubernetes_config_map" "web-entry-point-config" {
   metadata {
     name = "${local.service_name}-config"
     namespace = var.namespace
@@ -73,14 +73,14 @@ resource "kubernetes_config_map" "calendar-service-config" {
 
   data = {
     SPRING_PROFILES_ACTIVE = join(",", var.spring_profiles_active)
-    RABBITMQ_HOST = var.rabbitmq_host
-    RABBITMQ_PORT = var.rabbitmq_port
-    MONGO_CONNECTION_URI = var.mongo_connection_uri
-    KEYCLOAK_AUTH_URL = var.keycloak_auth_url
+    PROFILE_SERVICE_HOST = var.profile_service_host
+    GROUP_SERVICE_HOST = var.group_service_host
+    TASK_SERVICE_HOST = var.task_service_host
+    CALENDAR_SERVICE_HOST = var.calendar_service_host
   }
 }
 
-resource "kubernetes_service" "calendar-service" {
+resource "kubernetes_service" "web-entry-point" {
   metadata {
     name = local.service_name
     namespace = var.namespace
@@ -91,11 +91,12 @@ resource "kubernetes_service" "calendar-service" {
   }
 
   spec {
-    type = "ClusterIP"
+    type = "NodePort"
 
     port {
       name = "http"
-      port = 8080
+      port = 5000
+      node_port = 30021
     }
 
     selector = {

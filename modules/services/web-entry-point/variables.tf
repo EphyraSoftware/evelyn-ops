@@ -24,8 +24,8 @@ variable "image_pull_secret" {
   default = "ghregcred"
 }
 
-variable web_entry_point_keystore_secret_name {
-  description = "The name of the secret which contains the web entry point keystore."
+variable web_entry_point_keystore_config_map_name {
+  description = "The name of the config map which contains the web entry point keystore."
   type = "string"
 
   default = "web-entry-point-keystore"

@@ -56,8 +56,8 @@ resource "kubernetes_deployment" "profile-service" {
 
         volume {
           name = "keystore"
-          secret {
-            secret_name = var.profile_service_keystore_secret_name
+          config_map {
+            name = var.profile_service_keystore_config_map_name
           }
         }
       }

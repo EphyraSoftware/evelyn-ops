@@ -1,3 +1,7 @@
+locals {
+  image_pull_policy = "Always"
+}
+
 module "rabbitmq-config" {
   source = "../../modules/rabbitmq-config"
 }
@@ -14,6 +18,9 @@ module "service-email-config" {
 
 module "keystore" {
   source = "../../modules/keystore"
+
+  namespace = module.common.services_namespace_name
+  trust_store_path = "\\\\nas.evelyn.internal\\terraform\\.files\\bundles\\truststore.p12"
 }
 
 module "service-email" {
@@ -21,6 +28,7 @@ module "service-email" {
 
   namespace = module.common.services_namespace_name
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-email-service:dev"
+  image_pull_policy = local.image_pull_policy
 }
 
 module "service-profile" {
@@ -28,6 +36,7 @@ module "service-profile" {
 
   namespace = module.common.services_namespace_name
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-profile-service:dev"
+  image_pull_policy = local.image_pull_policy
 }
 
 module "service-group" {
@@ -35,6 +44,7 @@ module "service-group" {
 
   namespace = module.common.services_namespace_name
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-group-service:dev"
+  image_pull_policy = local.image_pull_policy
 }
 
 module "service-task" {
@@ -42,6 +52,7 @@ module "service-task" {
 
   namespace = module.common.services_namespace_name
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-task-service:dev"
+  image_pull_policy = local.image_pull_policy
 }
 
 module "service-calendar" {
@@ -49,6 +60,7 @@ module "service-calendar" {
 
   namespace = module.common.services_namespace_name
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-calendar-service:dev"
+  image_pull_policy = local.image_pull_policy
 }
 
 module "web-entry-point" {
@@ -56,4 +68,5 @@ module "web-entry-point" {
 
   namespace = module.common.services_namespace_name
   image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-web-entry-point:dev"
+  image_pull_policy = local.image_pull_policy
 }

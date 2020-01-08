@@ -3,7 +3,7 @@ provider "keystore" {
 }
 
 provider "rabbitmq" {
-  endpoint = "http://127.0.0.1:6001"
+  endpoint = "http://edge.evelyn.internal:32233"
   username = "guest"
   password = "guest"
 }

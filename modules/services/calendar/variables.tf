@@ -24,8 +24,8 @@ variable "image_pull_secret" {
   default = "ghregcred"
 }
 
-variable calendar_service_keystore_secret_name {
-  description = "The name of the secret which contains the calendar service keystore."
+variable calendar_service_keystore_config_map_name {
+  description = "The name of the config map which contains the calendar service keystore."
   type = "string"
 
   default = "calendar-service-keystore"

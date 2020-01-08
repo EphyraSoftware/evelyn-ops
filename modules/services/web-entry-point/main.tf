@@ -56,8 +56,8 @@ resource "kubernetes_deployment" "web-entry-point" {
 
         volume {
           name = "keystore"
-          secret {
-            secret_name = var.web_entry_point_keystore_secret_name
+          config_map {
+            name = var.web_entry_point_keystore_config_map_name
           }
         }
       }

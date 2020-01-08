@@ -24,8 +24,8 @@ variable "image_pull_secret" {
   default = "ghregcred"
 }
 
-variable group_service_keystore_secret_name {
-  description = "The name of the secret which contains the group service keystore."
+variable group_service_keystore_config_map_name {
+  description = "The name of the config map which contains the group service keystore."
   type = "string"
 
   default = "group-service-keystore"

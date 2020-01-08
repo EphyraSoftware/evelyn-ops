@@ -56,8 +56,8 @@ resource "kubernetes_deployment" "task-service" {
 
         volume {
           name = "keystore"
-          secret {
-            secret_name = var.task_service_keystore_secret_name
+          config_map {
+            name = var.task_service_keystore_config_map_name
           }
         }
       }

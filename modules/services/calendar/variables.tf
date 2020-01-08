@@ -65,3 +65,10 @@ variable keycloak_auth_url {
 
   default = "https://keycloak.evelyn.internal:31739/auth"
 }
+
+variable profile_service_base_url {
+  description = "The base URL of the profile service (with no trailing slash)."
+  type = "string"
+
+  default = "http://evelyn-profile-service.evelyn-services:8080"
+}

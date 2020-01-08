@@ -77,6 +77,7 @@ resource "kubernetes_config_map" "calendar-service-config" {
     RABBITMQ_PORT = var.rabbitmq_port
     MONGO_CONNECTION_URI = var.mongo_connection_uri
     KEYCLOAK_AUTH_URL = var.keycloak_auth_url
+    PROFILE_SERVICE_BASE_URL = var.profile_service_base_url
   }
 }
 

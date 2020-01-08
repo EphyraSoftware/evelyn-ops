@@ -56,5 +56,5 @@ variable profile_service_base_url {
   description = "The base URL of the profile service (with no trailing slash)."
   type = "string"
 
-  default = "http://evelyn-group-service.evelyn-services:8080"
+  default = "http://evelyn-profile-service.evelyn-services:8080"
 }

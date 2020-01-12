@@ -1,10 +1,10 @@
 def helmRepoAddPM = new ProcManager('helm repo add elastic https://helm.elastic.co')
 defaultProcExecutor(helmRepoAddPM)
 
-def helmInstallPM = new ProcManager('helm install elasticsearch-logging elastic/elasticsearch --namespace evelyn-platform -f values.yaml')
+def helmInstallPM = new ProcManager('helm install kibana-logging elastic/kibana --namespace evelyn-platform -f values.yaml')
 defaultProcExecutor(helmInstallPM)
 
-//def helmUpgradePM = new ProcManager('helm upgrade elasticsearch-logging elastic/elasticsearch --namespace evelyn-platform -f values.yaml')
+//def helmUpgradePM = new ProcManager('helm upgrade kibana-logging elastic/kibana --namespace evelyn-platform -f values.yaml')
 //defaultProcExecutor(helmUpgradePM)
 
 void defaultProcExecutor(ProcManager procManager) {

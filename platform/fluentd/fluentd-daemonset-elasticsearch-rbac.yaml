@@ -69,7 +69,7 @@ spec:
           image: fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch
           env:
             - name:  FLUENT_ELASTICSEARCH_HOST
-              value: "elasticsearch-logging-master-headless.evelyn-platform.svc"
+              value: "elasticsearch-logging-master.evelyn-platform.svc"
             - name:  FLUENT_ELASTICSEARCH_PORT
               value: "9200"
             - name: FLUENT_ELASTICSEARCH_SCHEME

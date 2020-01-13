@@ -10,8 +10,6 @@ defaultProcExecutor(helmInstallPM)
 //def helmUpgradePM = new ProcManager('helm upgrade grafana stable/grafana --namespace evelyn-platform -f values.yaml')
 //defaultProcExecutor(helmUpgradePM)
 
-// YPM5gxaFbCLhQYhLPFODtZIuSkrROldF8jmq6hz6
-
 void defaultProcExecutor(ProcManager procManager) {
     def exitCode = procManager.run()
     if (exitCode != 0) {

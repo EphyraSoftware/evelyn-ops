@@ -1,7 +1,3 @@
-output "ca-cert" {
-  value = module.buildkitd.ca-cert
-}
-
 output "client-cert-pem" {
   value = module.buildkitd.client-cert-pem
 }

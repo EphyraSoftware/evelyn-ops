@@ -23,3 +23,8 @@ resource "local_file" "ca-int-out" {
   filename = "ca-int.crt"
   content = vault_pki_secret_backend_intermediate_set_signed.intermediate-ca.certificate
 }
+
+resource "local_file" "ca-bundle" {
+  filename = "\\\\nas.evelyn.internal\\terraform\\.files\\ca-bundle.pem"
+  content = "${vault_pki_secret_backend_root_cert.root-ca.certificate}\n${vault_pki_secret_backend_intermediate_set_signed.intermediate-ca.certificate}"
+}

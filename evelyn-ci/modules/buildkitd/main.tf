@@ -35,6 +35,26 @@ resource "kubernetes_deployment" "buildkitd" {
       }
 
       spec {
+        init_container {
+          name = "add-ca"
+          image = "alpine:latest"
+          command = [
+            "sh", "-c",
+            "apk add --update ca-certificates && cp /certs/ca.pem /usr/local/share/ca-certificates && update-ca-certificates && cp /etc/ssl/certs/* /tmp/"
+          ]
+
+          volume_mount {
+            mount_path = "/tmp"
+            name = "trusted-certs"
+          }
+
+          volume_mount {
+            mount_path = "/certs"
+            name = "certs"
+            read_only = true
+          }
+        }
+
         container {
           name = local.name
           image = "moby/buildkit:${var.image_tag}"
@@ -88,6 +108,11 @@ resource "kubernetes_deployment" "buildkitd" {
             name = "certs"
             read_only = true
           }
+
+          volume_mount {
+            mount_path = "/etc/ssl/certs"
+            name = "trusted-certs"
+          }
         }
 
         volume {
@@ -95,6 +120,11 @@ resource "kubernetes_deployment" "buildkitd" {
           secret {
             secret_name = kubernetes_secret.certs.metadata.0.name
           }
+        }
+
+        volume {
+          name = "trusted-certs"
+          empty_dir {}
         }
       }
     }
@@ -154,8 +184,8 @@ resource "kubernetes_secret" "certs" {
   }
 
   data = {
-    "ca.pem" = tls_self_signed_cert.ca-cert.cert_pem,
-    "cert.pem" = tls_locally_signed_cert.server.cert_pem,
-    "key.pem" = tls_private_key.server.private_key_pem
+    "ca.pem" = file("\\\\nas.evelyn.internal\\terraform\\.files\\ca-bundle.pem"),
+    "cert.pem" = vault_pki_secret_backend_cert.buildkitd-server.certificate,
+    "key.pem" = vault_pki_secret_backend_cert.buildkitd-server.private_key
   }
 }

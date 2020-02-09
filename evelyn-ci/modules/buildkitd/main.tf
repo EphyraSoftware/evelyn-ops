@@ -122,6 +122,31 @@ resource "kubernetes_service" "buildkitd" {
   }
 }
 
+resource "kubernetes_service" "buildkitd-node" {
+  count = var.expose_node_port ? 1 : 0
+  metadata {
+    labels = {
+      app = local.name
+    }
+
+    name = "${local.name}-node"
+    namespace = var.namespace
+  }
+  spec {
+    type = "NodePort"
+
+    port {
+      port = var.port
+      node_port = var.node_port
+      protocol = "TCP"
+    }
+
+    selector = {
+      app = local.name
+    }
+  }
+}
+
 resource "kubernetes_secret" "certs" {
   metadata {
     name = "${local.name}-certs"

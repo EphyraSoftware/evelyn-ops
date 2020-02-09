@@ -33,3 +33,20 @@ variable "server_dns_names" {
   description = "List of DNS names to use for the server certificate"
   default = []
 }
+
+variable "registry" {
+  type = string
+  default = "docker.pkg.github.com"
+}
+
+variable "registry_email" {
+  type = string
+}
+
+variable "registry_username" {
+  type = string
+}
+
+variable "registry_password" {
+  type = string
+}

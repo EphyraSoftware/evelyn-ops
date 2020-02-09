@@ -216,3 +216,6 @@ $RECYCLE.BIN/
 *.secret.txt
 
 /platform/hashicorp-vault/vault-helm/
+
+*.tfvars
+

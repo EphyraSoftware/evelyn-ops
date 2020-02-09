@@ -68,6 +68,11 @@ resource "kubernetes_deployment" "buildkitd" {
             "--oci-worker-no-process-sandbox"
           ]
 
+          env {
+            name = "DOCKER_CONFIG"
+            value = "/docker-config"
+          }
+
           readiness_probe {
             exec {
               command = [
@@ -110,6 +115,11 @@ resource "kubernetes_deployment" "buildkitd" {
           }
 
           volume_mount {
+            mount_path = "/docker-config"
+            name = "docker-config"
+          }
+
+          volume_mount {
             mount_path = "/etc/ssl/certs"
             name = "trusted-certs"
           }
@@ -119,6 +129,13 @@ resource "kubernetes_deployment" "buildkitd" {
           name = "certs"
           secret {
             secret_name = kubernetes_secret.certs.metadata.0.name
+          }
+        }
+
+        volume {
+          name = "docker-config"
+          secret {
+            secret_name = kubernetes_secret.docker-config.metadata.0.name
           }
         }
 
@@ -187,5 +204,29 @@ resource "kubernetes_secret" "certs" {
     "ca.pem" = file("\\\\nas.evelyn.internal\\terraform\\.files\\ca-bundle.pem"),
     "cert.pem" = vault_pki_secret_backend_cert.buildkitd-server.certificate,
     "key.pem" = vault_pki_secret_backend_cert.buildkitd-server.private_key
+  }
+}
+
+locals {
+  dockerconfigjson = {
+    "auths": {
+      (var.registry) = {
+        email    = var.registry_email
+        username = var.registry_username
+        password = var.registry_password
+        auth     = base64encode(join(":", [var.registry_username, var.registry_password]))
+      }
+    }
+  }
+}
+
+resource "kubernetes_secret" "docker-config" {
+  metadata {
+    name = "${local.name}-regcred"
+    namespace = var.namespace
+  }
+
+  data = {
+    "config.json" = jsonencode(local.dockerconfigjson)
   }
 }

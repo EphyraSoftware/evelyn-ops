@@ -7,9 +7,9 @@ resource "helm_release" "artifactory" {
   # 15 minutes.
   timeout = "900"
 
-  name       = "artifactory-oss"
+  name       = "artifactory-jcr"
   repository = data.helm_repository.jfrog.metadata[0].name
-  chart      = "jfrog/artifactory-oss"
+  chart      = "jfrog/artifactory-jcr"
   version    = "1.1.1"
   namespace = var.namespace
 

@@ -15,3 +15,7 @@ module "buildkitd" {
 module "artifactory" {
   source = "../../modules/artifactory"
 }
+
+module "artifactory-jcr" {
+  source = "../../modules/artifactory-jcr"
+}

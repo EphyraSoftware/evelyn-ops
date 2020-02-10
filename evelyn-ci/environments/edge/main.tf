@@ -11,3 +11,7 @@ module "buildkitd" {
   registry_email = var.registry_email
   registry_password = var.registry_password
 }
+
+module "artifactory" {
+  source = "../../modules/artifactory"
+}

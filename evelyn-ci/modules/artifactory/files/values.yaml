@@ -673,6 +673,7 @@ artifactory:
     #    memory: "128Mi"
     #    cpu: "50m"
 
+    # TODO!
     mainConf: |
       # Main Nginx configuration file
       worker_processes  4;

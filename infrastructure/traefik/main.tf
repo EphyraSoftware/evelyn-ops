@@ -24,6 +24,13 @@ resource "kubernetes_config_map" "traefik-config" {
 [[tls.certificates]]
   certFile = "/certs/tls.crt"
   keyFile = "/certs/tls.key"
+
+[providers.kubernetesCRD]
+  ingressClass = "traefik"
+
+[api]
+  dashboard = true
+  insecure = true
 EOF
   }
 }

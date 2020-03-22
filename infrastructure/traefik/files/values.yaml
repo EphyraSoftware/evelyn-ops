@@ -26,10 +26,6 @@ rollingUpdate:
 # Add volumes to the traefik pod.
 # This can be used to mount a cert pair or a configmap that holds a config.toml file.
 # After the volume has been mounted, add the configs into traefik by using the `additionalArguments` list below, eg:
-# additionalArguments:
-# - "--providers.file.filename=/config/dynamic.toml"
-# - "--tls.certificates.certFile=/certs/tls.crt"
-# - "--tls.certificates.keyFile=/certs/tls.key"
 volumes:
   - name: traefik-tls
     mountPath: "/certs"
@@ -37,12 +33,6 @@ volumes:
   - name: traefik-config
     mountPath: "/config"
     type: configMap
-# - name: public-cert
-#   mountPath: "/certs"
-#   type: secret
-# - name: configs
-#   mountPath: "/config"
-#   type: configMap
 
 globalArguments:
   - "--global.checknewversion"
@@ -54,10 +44,11 @@ globalArguments:
 # All available options available on https://docs.traefik.io/reference/static-configuration/cli/
 ## Use curly braces to pass values: `helm install --set="additionalArguments={--providers.kubernetesingress,--global.checknewversion=true}"`
 additionalArguments:
-  - "--log.level=DEBUG"
+  - "--api=true"
+  - "--log.level=INFO"
+  - "--metrics.prometheus=true"
   - "--providers.kubernetesingress=true"
-  - "--providers.file.filename=/config/dynamic.toml"
-#  - "--providers.kubernetesingress"
+  - "--providers.file.directory=/config"
 
 # Secret to be set as environment variables to be passed to Traefik's binary
 secretEnv: []

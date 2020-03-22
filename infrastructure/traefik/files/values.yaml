@@ -54,6 +54,8 @@ globalArguments:
 # All available options available on https://docs.traefik.io/reference/static-configuration/cli/
 ## Use curly braces to pass values: `helm install --set="additionalArguments={--providers.kubernetesingress,--global.checknewversion=true}"`
 additionalArguments:
+  - "--log.level=DEBUG"
+  - "--providers.kubernetesingress=true"
   - "--providers.file.filename=/config/dynamic.toml"
 #  - "--providers.kubernetesingress"
 

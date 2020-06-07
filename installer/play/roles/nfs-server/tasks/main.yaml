@@ -1,0 +1,59 @@
+---
+- name: Install NFS server
+  package:
+    name: nfs-kernel-server
+    state: present
+
+- name: Start and enable the NFS server
+  systemd:
+    name: nfs-kernel-server.service
+    state: started
+    enabled: yes
+
+
+- name: Create a volume group
+  lvg:
+    vg: nfsgroup
+    pvs: "{{ storage_disks }}"
+
+- name: Create a logical volume for storage
+  lvol:
+    vg: nfsgroup
+    lv: nfsvol
+    size: 100%VG
+    pvs: "{{ storage_disks }}"
+
+- name: Create a filesystem on the volume
+  filesystem:
+    fstype: "ext4"
+    dev: "/dev/mapper/nfsgroup-nfsvol"
+
+- name: Create group nfsnobody
+  group:
+    name: nfsnobody
+    state: present
+
+- name: Create a directory to mount the volume
+  file:
+    path: "/nfs"
+    group: "nfsnobody"
+    state: directory
+    mode: '0755'
+
+- name: Mount the created filesystem
+  mount:
+    path: "/nfs"
+    src: "/dev/mapper/nfsgroup-nfsvol"
+    fstype: "ext4"
+    opts: rw,nosuid,noexec
+    state: mounted
+
+- name: Configure newly mounted directory for use by NFS server
+  lineinfile:
+    path: /etc/exports
+    line: /nfs *(rw,sync,no_subtree_check,no_root_squash,no_all_squash,insecure)
+  register: nfsexports
+
+- name: Export the file system
+  shell: exportfs -rav
+  when: nfsexports.changed

@@ -1,0 +1,18 @@
+all:
+  hosts:
+    nodea:
+    nodeb:
+  vars:
+    ansible_ssh_private_key_file: /ssh/id_rsa
+  children:
+    nfs:
+      hosts:
+        nodea:
+      vars:
+        storage_disks: /dev/sdb,/dev/sdc
+    control:
+      hosts:
+        nodea:
+    compute:
+      hosts:
+        nodeb:

@@ -1,0 +1,38 @@
+---
+- name: Initialize the Kubernetes cluster using kubeadm
+  command: kubeadm init --apiserver-advertise-address="{{ node_ip }}" --apiserver-cert-extra-sans="{{ node_ip }}" --node-name "{{ node_hostname }}" --pod-network-cidr=10.5.0.0/16
+  # when: false
+
+- name: Create .kube directory for kubeuser
+  become: true
+  become_user: kubeuser
+  file:
+    path: "/home/kubeuser/.kube"
+    state: directory
+    mode: '0755'
+
+- name: Configure kubeuser with kubeconfig
+  command: cp -f /etc/kubernetes/admin.conf /home/kubeuser/.kube/config
+
+- name: Configure ownership of the kubeconfig file
+  file:
+    path: /home/kubeuser/.kube/config
+    owner: kubeuser
+
+- name: Install calico pod network
+  become: true
+  become_user: kubeuser
+  command: kubectl create -f https://docs.projectcalico.org/manifests/calico.yaml
+  # when: false
+
+- name: Fetch kubeconfig
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: kubeconfig
+
+- name: Generate join command
+  command: kubeadm token create --print-join-command
+  register: join_command
+
+- name: Copy join command to local file
+  local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./join-command"

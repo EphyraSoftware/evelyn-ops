@@ -2,3 +2,20 @@
 - hosts: nfs
   roles:
     - nfs-server
+
+- hosts: control
+  roles:
+    - container-runtime
+    - k8s-common
+    - k8s-control
+  vars:
+    node_hostname: nodea
+    node_ip: 192.168.1.2
+
+- hosts: compute
+  roles:
+    - container-runtime
+    - k8s-common
+    - k8s-compute
+  vars:
+    node_ip: 192.168.1.15

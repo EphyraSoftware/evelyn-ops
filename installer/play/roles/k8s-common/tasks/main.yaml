@@ -1,3 +1,4 @@
+---
 - name: Remove swapfile from /etc/fstab
   mount:
     name: "{{ item }}"
@@ -18,8 +19,7 @@
 
 - name: Adding apt repository for Kubernetes
   apt_repository:
-    # TODO focal not released yet
-    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    repo: "deb https://apt.kubernetes.io/ kubernetes-{{ ubuntu_version_name.kubernetes }} main"
     state: present
     filename: kubernetes.list
 

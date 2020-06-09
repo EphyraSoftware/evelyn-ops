@@ -1,0 +1,6 @@
+---
+- name: Import NFS playbook
+  import_playbook: nfs.yaml
+
+- name: Import Kubernetes playbook
+  import_playbook: kubernetes.yaml

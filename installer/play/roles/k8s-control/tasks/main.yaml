@@ -1,7 +1,12 @@
 ---
+- name: Check if kubeconfig exists
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: stat_kubeconfig
+
 - name: Initialize the Kubernetes cluster using kubeadm
   command: kubeadm init --apiserver-advertise-address="{{ node_ip }}" --apiserver-cert-extra-sans="{{ node_ip }}" --node-name "{{ node_hostname }}" --pod-network-cidr=10.5.0.0/16
-  # when: false
+  when: not stat_kubeconfig.stat.exists
 
 - name: Create .kube directory for kubeuser
   become: true
@@ -22,13 +27,14 @@
 - name: Install calico pod network
   become: true
   become_user: kubeuser
-  command: kubectl create -f https://docs.projectcalico.org/manifests/calico.yaml
-  # when: false
+  command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 
-- name: Fetch kubeconfig
-  fetch:
-    src: /etc/kubernetes/admin.conf
-    dest: kubeconfig
+- name: Print kubeconfig
+  command: cat /etc/kubernetes/admin.conf
+  register: kubeconfig
+
+- name: Copy kubeconfig to local file
+  local_action: copy content="{{ kubeconfig.stdout }}" dest="./kubeconfig"
 
 - name: Generate join command
   command: kubeadm token create --print-join-command

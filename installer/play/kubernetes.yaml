@@ -1,0 +1,14 @@
+---
+- hosts: kubernetes
+  roles:
+    - nfs-client
+    - container-runtime
+    - k8s-common
+
+- hosts: control
+  roles:
+    - k8s-control
+
+- hosts: compute
+  roles:
+    - k8s-compute

@@ -1,22 +1,33 @@
 ---
 all:
   hosts:
-    nodea:
-    nodeb:
+    controla.evelyn.internal:
+    computea.evelyn.internal:
+    computeb.evelyn.internal:
   children:
     nfs:
       hosts:
-        nodea:
+        computeb.evelyn.internal:
       vars:
-        storage_disks: /dev/sdb,/dev/sdc
+        storage_disks: /dev/sdb,/dev/sdc,/dev/sdd
+    kubernetes:
+      hosts:
+        controla.evelyn.internal:
+        computea.evelyn.internal:
+        computeb.evelyn.internal:
+      vars:
+        ubuntu_version_name:
+          docker: focal
+          kubernetes: xenial
     control:
       hosts:
-        nodea:
+        controla.evelyn.internal:
       vars:
-        node_hostname: nodea
-        node_ip: 192.168.1.2
+        node_hostname: controla.evelyn.internal
+        node_ip: 192.168.1.29
     compute:
       hosts:
-        nodeb:
+        computea.evelyn.internal:
+        computeb.evelyn.internal:
       vars:
-        node_ip: 192.168.1.15
+        node_ip: 192.168.1.30,192.168.1.32

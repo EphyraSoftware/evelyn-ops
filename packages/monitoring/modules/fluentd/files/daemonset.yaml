@@ -1,13 +1,12 @@
 ---
-#
-# https://github.com/fluent/fluentd-kubernetes-daemonset
-#
+# https://github.com/fluent/fluentd-kubernetes-daemonset/blob/master/fluentd-daemonset-elasticsearch-rbac.yaml
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: fluentd
   namespace: kube-system
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
@@ -38,9 +37,6 @@ subjects:
     name: fluentd
     namespace: kube-system
 ---
-#
-# Note that this section has been updated from the original!
-#
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -53,6 +49,7 @@ spec:
   selector:
     matchLabels:
       k8s-app: fluentd-logging
+      version: v1
   template:
     metadata:
       labels:
@@ -69,38 +66,11 @@ spec:
           image: fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch
           env:
             - name:  FLUENT_ELASTICSEARCH_HOST
-              value: "elasticsearch-logging-master.evelyn-platform.svc"
+              value: "elasticsearch-master.monitoring.svc"
             - name:  FLUENT_ELASTICSEARCH_PORT
               value: "9200"
             - name: FLUENT_ELASTICSEARCH_SCHEME
               value: "http"
-            # TODO Figure out how the systemd journal is meant to be provided and remove this variable.
-            - name: FLUENTD_SYSTEMD_CONF
-              value: "disable"
-
-#            # Option to configure elasticsearch plugin with self signed certs
-#            # ================================================================
-#            - name: FLUENT_ELASTICSEARCH_SSL_VERIFY
-#              value: "true"
-
-#            # Option to configure elasticsearch plugin with tls
-#            # ================================================================
-#            - name: FLUENT_ELASTICSEARCH_SSL_VERSION
-#              value: "TLSv1_2"
-
-#            # X-Pack Authentication
-#            # =====================
-#            - name: FLUENT_ELASTICSEARCH_USER
-#              value: "elastic"
-#            - name: FLUENT_ELASTICSEARCH_PASSWORD
-#              value: "changeme"
-
-#            # Logz.io Authentication
-#            # ======================
-#            - name: LOGZIO_TOKEN
-#              value: "ThisIsASuperLongToken"
-#            - name: LOGZIO_LOGTYPE
-#              value: "kubernetes"
           resources:
             limits:
               memory: 200Mi

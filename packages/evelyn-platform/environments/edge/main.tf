@@ -15,3 +15,9 @@ module "mongodb" {
 
   namespace = module.namespace.namespace
 }
+
+module "keycloak" {
+  source = "../../modules/keycloak"
+
+  namespace = module.namespace.namespace
+}

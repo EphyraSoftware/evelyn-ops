@@ -9,3 +9,9 @@ module "rabbitmq" {
 
   namespace = module.namespace.namespace
 }
+
+module "mongodb" {
+  source = "../../modules/mongodb"
+
+  namespace = module.namespace.namespace
+}

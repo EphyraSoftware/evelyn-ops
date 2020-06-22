@@ -22,13 +22,10 @@ resource "vault_pki_secret_backend_cert" "traefik" {
 
   auto_renew = true
   ttl = "720h"
+
   format = "pem"
 
   common_name = "traefik.evelyn.internal"
-
-  alt_names = [
-    "artifactory.evelyn.internal"
-  ]
 }
 
 resource "kubernetes_secret" "traefik-tls" {

@@ -40,10 +40,10 @@ podAnnotations: {}
 
 resources:
   requests:
-    cpu: "500m"
-    memory: "1Gi"
+    cpu: "1000m"
+    memory: "2Gi"
   limits:
-    cpu: "500m"
+    cpu: "1000m"
     memory: "2Gi"
 
 protocol: http
@@ -108,13 +108,13 @@ service:
   # 0.0.0.0/0
 
 ingress:
-  enabled: false
+  enabled: true
   annotations: {}
     # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - chart-example.local
+    - kibana.evelyn.internal
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

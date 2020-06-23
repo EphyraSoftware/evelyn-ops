@@ -169,29 +169,47 @@ resource "kubernetes_service" "buildkitd" {
   }
 }
 
-resource "kubernetes_service" "buildkitd-node" {
-  count = var.expose_node_port ? 1 : 0
+resource "kubernetes_ingress" "buildkitd" {
   metadata {
     labels = {
       app = local.name
     }
 
-    name = "${local.name}-node"
+    name = local.name
     namespace = var.namespace
   }
   spec {
-    type = "NodePort"
-
-    port {
-      port = var.port
-      node_port = var.node_port
-      protocol = "TCP"
+    tls {
+      hosts = [ var.ingress_hostname ]
+      secret_name = kubernetes_secret.ingress-certs.metadata.0.name
     }
 
-    selector = {
-      app = local.name
+    rule {
+      host = var.ingress_hostname
+      http {
+        path {
+          backend {
+            service_name = kubernetes_service.buildkitd.metadata.0.name
+            service_port = var.port
+          }
+        }
+      }
     }
   }
+}
+
+resource "kubernetes_secret" "ingress-certs" {
+  metadata {
+    name = "${local.name}-ingress-certs"
+    namespace = var.namespace
+  }
+
+  data = {
+    "tls.crt" = vault_pki_secret_backend_cert.buildkitd-server.certificate,
+    "tls.key" = vault_pki_secret_backend_cert.buildkitd-server.private_key
+  }
+
+  type = "kubernetes.io/tls"
 }
 
 resource "kubernetes_secret" "certs" {
@@ -201,7 +219,7 @@ resource "kubernetes_secret" "certs" {
   }
 
   data = {
-    "ca.pem" = file("\\\\nas.evelyn.internal\\terraform\\.files\\ca-bundle.pem"),
+    "ca.pem" = file("\\\\nas.evelyn.internal\\terraform\\.files\\vault-ca\\ca-bundle.pem"),
     "cert.pem" = vault_pki_secret_backend_cert.buildkitd-server.certificate,
     "key.pem" = vault_pki_secret_backend_cert.buildkitd-server.private_key
   }

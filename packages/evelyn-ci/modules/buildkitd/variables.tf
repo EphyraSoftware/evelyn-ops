@@ -1,7 +1,6 @@
 variable "namespace" {
   type = string
   description = "The namespace to deploy to."
-  default = "evelyn-ci"
 }
 
 variable "image_tag" {
@@ -16,22 +15,9 @@ variable "port" {
   default = 8999
 }
 
-variable "expose_node_port" {
-  type = bool
-  description = "Whether to expose a NodePort service for buildkitd."
-  default = false
-}
-
-variable "node_port" {
-  type = number
-  description = "The node port to expose."
-  default = 31015
-}
-
-variable "server_dns_names" {
-  type = list(string)
-  description = "List of DNS names to use for the server certificate"
-  default = []
+variable "ingress_hostname" {
+  type = string
+  description = "The ingress hostname to use"
 }
 
 variable "registry" {

@@ -6,7 +6,7 @@ resource "vault_pki_secret_backend_role" "buildkitd-role" {
   allow_subdomains = true
   basic_constraints_valid_for_non_ca = true
   allow_bare_domains = true
-  allowed_domains = [ "evelyn-ci.svc", "evelyn-ci.svc.cluster.local", "edge.evelyn.internal", "client" ]
+  allowed_domains = [ "${var.namespace}.svc", "${var.namespace}.svc.cluster.local", var.ingress_hostname, "client" ]
 
   key_usage = [
     "DigitalSignature",
@@ -24,11 +24,11 @@ resource "vault_pki_secret_backend_cert" "buildkitd-server" {
   ttl = "720h"
   format = "pem"
 
-  common_name = "buildkitd.evelyn-ci.svc"
+  common_name = "buildkitd.${var.namespace}.svc"
 
   alt_names = [
-    "edge.evelyn.internal",
-    "buildkitd.evelyn-ci.svc.cluster.local"
+    var.ingress_hostname,
+    "buildkitd.${var.namespace}.svc.cluster.local"
   ]
 }
 

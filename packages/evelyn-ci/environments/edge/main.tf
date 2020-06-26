@@ -16,3 +16,11 @@ module "buildkit" {
   registry_username = var.registry_username
   registry_password = var.registry_password
 }
+
+module "portus" {
+  source = "../../modules/portus"
+
+  namespace = module.namespace.namespace
+
+  hostname = "portus.evelyn.internal"
+}

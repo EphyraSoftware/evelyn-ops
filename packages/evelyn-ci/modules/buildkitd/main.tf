@@ -169,35 +169,6 @@ resource "kubernetes_service" "buildkitd" {
   }
 }
 
-resource "kubernetes_ingress" "buildkitd" {
-  metadata {
-    labels = {
-      app = local.name
-    }
-
-    name = local.name
-    namespace = var.namespace
-  }
-  spec {
-    tls {
-      hosts = [ var.ingress_hostname ]
-      secret_name = kubernetes_secret.ingress-certs.metadata.0.name
-    }
-
-    rule {
-      host = var.ingress_hostname
-      http {
-        path {
-          backend {
-            service_name = kubernetes_service.buildkitd.metadata.0.name
-            service_port = var.port
-          }
-        }
-      }
-    }
-  }
-}
-
 resource "kubernetes_secret" "ingress-certs" {
   metadata {
     name = "${local.name}-ingress-certs"

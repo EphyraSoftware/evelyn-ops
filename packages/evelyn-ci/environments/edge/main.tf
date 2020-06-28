@@ -17,10 +17,18 @@ module "buildkit" {
   registry_password = var.registry_password
 }
 
-module "portus" {
-  source = "../../modules/portus"
+//module "portus" {
+//  source = "../../modules/portus"
+//
+//  namespace = module.namespace.namespace
+//
+//  hostname = "portus.evelyn.internal"
+//}
+
+module "harbor" {
+  source = "../../modules/harbor"
 
   namespace = module.namespace.namespace
-
-  hostname = "portus.evelyn.internal"
+  harbor-hostname = "harbor.evelyn.internal"
+  notary-hostname = "notary.evelyn.internal"
 }

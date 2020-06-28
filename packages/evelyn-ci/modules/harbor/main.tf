@@ -90,15 +90,15 @@ resource "helm_release" "harbor" {
     value = "http://${var.harbor-hostname}"
   }
 
-//  set {
-//    name = "secretKey"
-//    value = random_password.secret-key.result
-//  }
+  set {
+    name = "secretKey"
+    value = random_password.secret-key.result
+  }
 
-//  set {
-//    name = "harborAdminPassword"
-//    value = random_password.admin-password.result
-//  }
+  set {
+    name = "harborAdminPassword"
+    value = random_password.admin-password.result
+  }
 
   set {
     name = "caBundleSecretName"

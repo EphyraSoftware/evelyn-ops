@@ -1,17 +1,16 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  name: buildkitd
+  name: registry
   namespace: evelyn-ci
 spec:
   entryPoints:
   - websecure
   routes:
-  # Match is the rule corresponding to an underlying router.
-  - match: HostSNI(`buildkit.evelyn.internal`)
+  - match: HostSNI(`registry.evelyn.internal`)
     services:
-    - name: buildkitd
-      port: 8999
+    - name: registry
+      port: 5000
       terminationDelay: 400
       weight: 10
   tls:

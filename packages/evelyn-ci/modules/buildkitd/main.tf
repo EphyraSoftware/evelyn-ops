@@ -219,3 +219,11 @@ resource "kubernetes_secret" "docker-config" {
     "config.json" = jsonencode(local.dockerconfigjson)
   }
 }
+
+resource "k8s-yaml_raw" "ingress" {
+  name = "ingress"
+
+  files = [
+    "${path.module}/ingress-route.yaml"
+  ]
+}

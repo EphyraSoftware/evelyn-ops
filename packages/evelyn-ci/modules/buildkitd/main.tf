@@ -65,7 +65,8 @@ resource "kubernetes_deployment" "buildkitd" {
             "--tlscacert", "/certs/ca.pem",
             "--tlscert", "/certs/cert.pem",
             "--tlskey", "/certs/key.pem",
-            "--oci-worker-no-process-sandbox"
+            "--oci-worker-no-process-sandbox",
+            "--debug"
           ]
 
           env {
@@ -99,11 +100,6 @@ resource "kubernetes_deployment" "buildkitd" {
             period_seconds = 30
           }
 
-          security_context {
-            run_as_user = 1000
-            run_as_group = 1000
-          }
-
           port {
             container_port = var.port
           }
@@ -117,6 +113,7 @@ resource "kubernetes_deployment" "buildkitd" {
           volume_mount {
             mount_path = "/docker-config"
             name = "docker-config"
+            read_only = true
           }
 
           volume_mount {
@@ -129,6 +126,7 @@ resource "kubernetes_deployment" "buildkitd" {
           name = "certs"
           secret {
             secret_name = kubernetes_secret.certs.metadata.0.name
+            default_mode = "0644"
           }
         }
 
@@ -136,6 +134,7 @@ resource "kubernetes_deployment" "buildkitd" {
           name = "docker-config"
           secret {
             secret_name = kubernetes_secret.docker-config.metadata.0.name
+            default_mode = "0644"
           }
         }
 
@@ -200,9 +199,9 @@ locals {
   dockerconfigjson = {
     "auths": {
       (var.registry) = {
-        email    = var.registry_email
         username = var.registry_username
         password = var.registry_password
+        email    = "none"
         auth     = base64encode(join(":", [var.registry_username, var.registry_password]))
       }
     }

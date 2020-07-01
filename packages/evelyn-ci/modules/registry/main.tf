@@ -162,6 +162,11 @@ resource "kubernetes_deployment" "registry" {
             value = "/etc/auth/htpasswd"
           }
 
+          env {
+            name = "REGISTRY_LOG_LEVEL"
+            value = "debug"
+          }
+
           volume_mount {
             mount_path = "/var/lib/registry"
             name = "registry-storage"

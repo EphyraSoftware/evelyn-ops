@@ -7,5 +7,5 @@ output "admin-password" {
 }
 
 output "registry-hostname" {
-  value = var.namespace
+  value = var.hostname
 }

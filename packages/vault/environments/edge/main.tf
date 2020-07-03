@@ -1,3 +1,5 @@
 module "vault" {
-  source = "../../modules/vault"
+  source = "../../module"
+
+  hostname = "vault.evelyn.internal"
 }

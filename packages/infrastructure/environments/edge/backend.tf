@@ -1,5 +1,5 @@
 terraform {
   backend "local" {
-    path = "\\\\nas.evelyn.internal\\terraform\\infrastructure\\edge\\terraform.tfstate"
+    path = "\\\\nas.evelyn.internal\\terraform\\edge\\infrastructure.tfstate"
   }
 }

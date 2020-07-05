@@ -14,10 +14,10 @@ resource "tls_self_signed_cert" "ca" {
 
   validity_period_hours = 720
 
+  is_ca_certificate = true
+
   allowed_uses = [
-    "key_encipherment",
-    "digital_signature",
-    "server_auth",
+    "cert_signing"
   ]
 }
 
@@ -34,12 +34,16 @@ resource "tls_cert_request" "vault" {
     common_name  = var.hostname
     organization = "Ephyra"
   }
+
+  dns_names = [
+    var.hostname
+  ]
 }
 
 resource "tls_locally_signed_cert" "vault" {
   cert_request_pem   = tls_cert_request.vault.cert_request_pem
   ca_key_algorithm   = tls_self_signed_cert.ca.key_algorithm
-  ca_private_key_pem = tls_private_key.vault.private_key_pem
+  ca_private_key_pem = tls_private_key.ca.private_key_pem
   ca_cert_pem        = tls_self_signed_cert.ca.cert_pem
 
   validity_period_hours = 720
@@ -58,8 +62,8 @@ resource "kubernetes_secret" "vault-tls" {
   }
 
   data = {
-    "tls.crt" = tls_private_key.vault.private_key_pem
-    "tls.key" = tls_locally_signed_cert.vault.cert_pem
+    "tls.crt" = tls_locally_signed_cert.vault.cert_pem
+    "tls.key" = tls_private_key.vault.private_key_pem
   }
 
   type = "kubernetes.io/tls"

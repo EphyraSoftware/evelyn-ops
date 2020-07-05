@@ -6,7 +6,8 @@ module "prometheus-operator" {
   source = "../../modules/prometheus-operator"
 
   namespace = module.namespace.namespace-name
-  storage-class-name = "nfs-client"
+  storage_class_name = "nfs-client"
+  grafana_hostname = "grafana.evelyn.internal"
 }
 
 module "elastic-search" {

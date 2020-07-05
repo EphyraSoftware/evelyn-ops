@@ -487,7 +487,9 @@ grafana:
 
     ## Annotations for Grafana Ingress
     ##
-    annotations: {}
+    annotations:
+      traefik.ingress.kubernetes.io/frontend-entry-points: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
       # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
 
@@ -501,7 +503,7 @@ grafana:
     # hosts:
     #   - grafana.domain.com
     hosts:
-      - grafana.evelyn.internal
+      - grafana.hostname
 
     ## Path for grafana ingress
     path: /
@@ -509,10 +511,10 @@ grafana:
     ## TLS configuration for grafana Ingress
     ## Secret must be manually created in the namespace
     ##
-    tls: []
-    # - secretName: grafana-general-tls
-    #   hosts:
-    #   - grafana.example.com
+    tls:
+      - secretName: grafana-general-tls
+        hosts:
+          - grafana.example.com
 
   sidecar:
     dashboards:

@@ -11,8 +11,6 @@ module "registry" {
   hostname = "registry.evelyn.internal"
 }
 
-// Example command to test with
-// buildctl --addr tcp://buildkit.evelyn.internal:443 --tlscacert ca-bundle.pem --tlscert crt.pem --tlskey key.pem --debug build --frontend=dockerfile.v0 --local context=. --local dockerfile=.
 module "buildkit" {
   source = "../../modules/buildkitd"
 

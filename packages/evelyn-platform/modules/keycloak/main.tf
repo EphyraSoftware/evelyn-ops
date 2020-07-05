@@ -14,6 +14,21 @@ resource "helm_release" "keycloak" {
     name = "keycloak.existingSecret"
     value = kubernetes_secret.admin.metadata.0.name
   }
+
+  set {
+    name = "keycloak.ingress.hosts[0]"
+    value = var.keycloak_hostname
+  }
+
+  set {
+    name = "keycloak.ingress.tls[0].secretName"
+    value = kubernetes_secret.keycloak-tls.metadata.0.name
+  }
+
+  set {
+    name = "keycloak.ingress.tls[0].hosts[0]"
+    value = var.keycloak_hostname
+  }
 }
 
 resource "kubernetes_secret" "admin" {

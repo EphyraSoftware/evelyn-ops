@@ -20,4 +20,5 @@ module "keycloak" {
   source = "../../modules/keycloak"
 
   namespace = module.namespace.namespace
+  keycloak_hostname = "keycloak.evelyn.internal"
 }

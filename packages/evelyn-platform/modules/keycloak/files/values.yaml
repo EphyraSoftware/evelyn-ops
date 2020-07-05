@@ -252,7 +252,9 @@ keycloak:
     path: /
     servicePort: http
 
-    annotations: {}
+    annotations:
+      traefik.ingress.kubernetes.io/frontend-entry-points: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     # ingress.kubernetes.io/affinity: cookie
@@ -262,13 +264,13 @@ keycloak:
 
     ## List of hosts for the ingress
     hosts:
-      - keycloak.evelyn.internal
+      - keycloak.host
 
     ## TLS configuration
-    tls: []
-    # - hosts:
-    #     - keycloak.example.com
-    #   secretName: tls-keycloak
+    tls:
+     - hosts:
+         - keycloak.example.com
+       secretName: tls-keycloak
 
   ## OpenShift route configuration.
   ## ref: https://docs.openshift.com/container-platform/3.11/architecture/networking/routes.html

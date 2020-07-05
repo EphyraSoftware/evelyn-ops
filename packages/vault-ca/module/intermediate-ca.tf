@@ -36,14 +36,3 @@ resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate-ca" {
 
   certificate = vault_pki_secret_backend_root_sign_intermediate.intermediate-ca.certificate
 }
-
-resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
-  backend              = vault_mount.intermediate-ca.path
-  issuing_certificates = ["http://127.0.0.1:8200/v1/pki/ca"]
-}
-
-resource "vault_pki_secret_backend_crl_config" "crl_config_int" {
-  backend   = vault_mount.intermediate-ca.path
-  expiry    = "43800h"
-  disable   = false
-}

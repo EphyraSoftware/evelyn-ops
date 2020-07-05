@@ -5,6 +5,7 @@ resource "vault_pki_secret_backend_role" "evelyn-internal-role" {
   name    = "evelyn-internal-role"
 
   max_ttl = "2592000"
+  key_bits = 4096
   allow_subdomains = true
   basic_constraints_valid_for_non_ca = true
   allowed_domains = [

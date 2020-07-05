@@ -1,5 +1,7 @@
 module "vault-ca" {
   source = "../../module"
+
+  hostname = "vault.evelyn.internal"
 }
 
 resource "local_file" "ca-out" {

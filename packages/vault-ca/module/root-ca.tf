@@ -25,12 +25,9 @@ resource "vault_pki_secret_backend_root_cert" "root-ca" {
 }
 
 resource "vault_pki_secret_backend_config_urls" "config_urls" {
-  backend              = vault_mount.root-ca.path
-  issuing_certificates = ["http://127.0.0.1:8200/v1/pki/ca"]
-}
+  depends_on = [ vault_pki_secret_backend_root_cert.root-ca ]
 
-resource "vault_pki_secret_backend_crl_config" "crl_config" {
-  backend   = vault_mount.root-ca.path
-  expiry    = "72h"
-  disable   = false
+  backend              = vault_mount.root-ca.path
+  issuing_certificates = ["https://${var.hostname}/v1/pki/ca"]
+  crl_distribution_points = ["https://${var.hostname}/v1/pki/crl"]
 }

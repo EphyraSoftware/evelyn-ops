@@ -1,5 +1,5 @@
 terraform {
   backend "local" {
-    path = "\\\\nas.evelyn.internal\\terraform\\kubernetes-dashboard\\edge\\terraform.tfstate"
+    path = "\\\\nas.evelyn.internal\\terraform\\edge\\kubernetes-dashboard.tfstate"
   }
 }

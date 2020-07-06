@@ -12,6 +12,10 @@ output "ca-bundle" {
   value = module.buildkit.ca-bundle
 }
 
+output "registry-username" {
+  value = module.registry.admin-username
+}
+
 output "registry-password" {
   value = module.registry.admin-password
 }

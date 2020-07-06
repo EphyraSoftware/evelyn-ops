@@ -1,5 +1,6 @@
 locals {
   image_pull_policy = "Always"
+  image_registry = "registry.evelyn.internal"
 }
 
 //module "rabbitmq-config" {
@@ -9,7 +10,7 @@ locals {
 module "common" {
   source = "../../modules/common"
 
-  registry_hostname = "registry.evelyn.internal:443"
+  registry_hostname = "${local.image_registry}:443"
   registry_email = "not-required@evelyn.internal"
 }
 
@@ -49,15 +50,16 @@ module "common" {
 //  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-group-service:dev"
 //  image_pull_policy = local.image_pull_policy
 //}
-//
-//module "service-task" {
-//  source = "../../modules/services/task"
-//
-//  namespace = module.common.services_namespace_name
-//  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-task-service:dev"
-//  image_pull_policy = local.image_pull_policy
-//}
-//
+
+module "service-task" {
+  source = "../../modules/services/task"
+
+  namespace = module.common.services_namespace_name
+  image = "${local.image_registry}:443/ephyrasoftware/task-service:latest"
+  image_pull_policy = local.image_pull_policy
+  image_pull_secret = module.common.pull_secret
+}
+
 //module "service-calendar" {
 //  source = "../../modules/services/calendar"
 //
@@ -73,3 +75,11 @@ module "common" {
 //  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-web-entry-point:dev"
 //  image_pull_policy = local.image_pull_policy
 //}
+
+module "ingress" {
+  source = "../../modules/ingress"
+
+  namespace = module.common.services_namespace_name
+  tasks_service_name = module.service-task.service_name
+  tasks_service_port = module.service-task.service_port
+}

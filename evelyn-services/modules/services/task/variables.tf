@@ -20,13 +20,11 @@ variable "image" {
 variable "image_pull_secret" {
   description = "The image pull secret to use."
   type = string
-
-  default = "ghregcred"
 }
 
 variable task_service_keystore_config_map_name {
   description = "The name of the config map which contains the task service keystore."
-  type = "string"
+  type = string
 
   default = "task-service-keystore"
 }
@@ -40,21 +38,21 @@ variable spring_profiles_active {
 
 variable mongo_connection_uri {
   description = "The MongoDB connection URI."
-  type = "string"
+  type = string
 
   default = "mongodb://mongodb.evelyn-platform:27017/"
 }
 
 variable keycloak_auth_url {
   description = "The Keycloak authentication URL."
-  type = "string"
+  type = string
 
   default = "https://keycloak.evelyn.internal:31739/auth"
 }
 
 variable profile_service_base_url {
   description = "The base URL of the profile service (with no trailing slash)."
-  type = "string"
+  type = string
 
   default = "https://evelyn-profile-service.evelyn-services.svc.cluster.local:8080"
 }

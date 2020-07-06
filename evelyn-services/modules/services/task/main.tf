@@ -42,23 +42,10 @@ resource "kubernetes_deployment" "task-service" {
             name = "http"
             container_port = 8080
           }
-
-          volume_mount {
-            name = "keystore"
-            mount_path = "/etc/evelyn"
-            read_only = true
-          }
         }
 
         image_pull_secrets {
           name = var.image_pull_secret
-        }
-
-        volume {
-          name = "keystore"
-          config_map {
-            name = var.task_service_keystore_config_map_name
-          }
         }
       }
     }

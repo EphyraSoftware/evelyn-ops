@@ -1,0 +1,13 @@
+- name: Install ca-certificates package
+  package:
+    name: ca-certificates
+    state: present
+
+- name: Copy Evelyn CA certificate
+  copy: src=ca.pem dest=/usr/local/share/ca-certificates/ca.crt
+
+- name: Copy Evelyn intermediate CA certificate
+  copy: src=ca-int.pem dest=/usr/local/share/ca-certificates/ca-int.crt
+
+- name: Update CA certificates
+  shell: update-ca-certificates

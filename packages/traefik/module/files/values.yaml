@@ -47,6 +47,9 @@ volumes:
   - name: set-me
     mountPath: "/config"
     type: configMap
+  - name: set-me
+    mountPath: "/ca"
+    type: configMap
 
 globalArguments:
   - "--global.checknewversion"
@@ -60,7 +63,11 @@ globalArguments:
 additionalArguments:
 #  - "--providers.kubernetesingress.ingressclass=traefik-internal"
   - "--providers.file.filename=/config/dynamic.toml"
-  - "--log.level=INFO"
+  # Only IP sans are supported, so unless certificates can be generated dynamically for pods, verification won't work. Use TCP ingress?
+  # https://github.com/containous/traefik/issues/3906
+  - "--serverstransport.insecureskipverify=true"
+  - "--serverstransport.rootcas=/ca/ca.crt"
+  - "--log.level=DEBUG"
   - "--accesslog=true"
 
 # Environment variables to be passed to Traefik's binary

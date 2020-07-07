@@ -40,14 +40,14 @@ variable mongo_connection_uri {
   description = "The MongoDB connection URI."
   type = string
 
-  default = "mongodb://mongodb.evelyn-platform:27017/"
+  default = "mongodb://mongodb-replicaset.evelyn-platform:27017/"
 }
 
 variable keycloak_auth_url {
   description = "The Keycloak authentication URL."
   type = string
 
-  default = "https://keycloak.evelyn.internal:31739/auth"
+  default = "https://keycloak.evelyn.internal/auth"
 }
 
 variable profile_service_base_url {

@@ -19,14 +19,14 @@ module "common" {
 //
 //  vhost_name = module.rabbitmq-config.vhost_name
 //}
-//
-//module "keystore" {
-//  source = "../../modules/keystore"
-//
-//  namespace = module.common.services_namespace_name
-//  trust_store_path = "\\\\nas.evelyn.internal\\terraform\\.files\\bundles\\truststore.p12"
-//}
-//
+
+module "keystore" {
+  source = "../../modules/keystore"
+
+  namespace = module.common.services_namespace_name
+  trust_store_path = "\\\\nas.evelyn.internal\\terraform\\.files\\bundles\\truststore.p12"
+}
+
 //module "service-email" {
 //  source = "../../modules/services/email"
 //
@@ -80,6 +80,7 @@ module "ingress" {
   source = "../../modules/ingress"
 
   namespace = module.common.services_namespace_name
+  external_shared_hostname = "service.evelyn.internal"
   tasks_service_name = module.service-task.service_name
   tasks_service_port = module.service-task.service_port
 }

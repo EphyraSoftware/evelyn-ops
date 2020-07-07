@@ -15,8 +15,8 @@ resource "kubernetes_ingress" "evelyn-services" {
         path {
           path = "/tasks"
           backend {
-            service_name = var.tasks_service_name
-            service_port = var.tasks_service_port
+            service_name = var.task_service_name
+            service_port = var.task_service_port
           }
         }
       }
@@ -37,10 +37,22 @@ resource "kubernetes_ingress" "evelyn-services" {
       host = var.external_shared_hostname
       http {
         path {
-          path = "/tasks"
+          path = "/groups"
           backend {
             service_name = var.group_service_name
             service_port = var.group_service_port
+          }
+        }
+      }
+    }
+    rule {
+      host = var.external_shared_hostname
+      http {
+        path {
+          path = "/todos"
+          backend {
+            service_name = var.todo_service_name
+            service_port = var.todo_service_port
           }
         }
       }

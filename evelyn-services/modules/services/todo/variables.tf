@@ -22,11 +22,11 @@ variable "image_pull_secret" {
   type = string
 }
 
-variable task_service_keystore_config_map_name {
-  description = "The name of the config map which contains the task service keystore."
+variable todo_service_keystore_config_map_name {
+  description = "The name of the config map which contains the todo service keystore."
   type = string
 
-  default = "task-service-keystore"
+  default = "todo-service-keystore"
 }
 
 variable spring_profiles_active {

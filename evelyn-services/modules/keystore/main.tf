@@ -62,6 +62,22 @@ resource "kubernetes_config_map" "task-service-keystore" {
   }
 }
 
+data "keystore_pkcs12_bundle" "todo-service" {
+  name = "todo-service-keystore"
+}
+
+resource "kubernetes_config_map" "todo-service-keystore" {
+  metadata {
+    name = "todo-service-keystore"
+    namespace = var.namespace
+  }
+
+  binary_data = {
+    "todo-service-keystore.p12" = data.keystore_pkcs12_bundle.todo-service.bundle
+    "truststore.p12" = filebase64(var.trust_store_path)
+  }
+}
+
 data "keystore_pkcs12_bundle" "web-entry-point" {
   name = "web-entry-point-keystore"
 }

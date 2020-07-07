@@ -55,5 +55,20 @@ resource "vault_pki_secret_backend_cert" "certs-evelyn-task-service" {
 
   common_name = "evelyn-task-service.${var.services_namespace}.svc.cluster.local"
 
-  alt_names = [ "evelyn-profile-service.${var.services_namespace}.svc.cluster.local" ]
+  alt_names = [ "evelyn-task-service.${var.services_namespace}.svc.cluster.local" ]
+}
+
+resource "vault_pki_secret_backend_cert" "certs-evelyn-todo-service" {
+  depends_on = [ vault_mount.intermediate-ca ]
+
+  backend = vault_mount.intermediate-ca.path
+  name = vault_pki_secret_backend_role.evelyn-services-role.name
+
+  auto_renew = true
+  ttl = "720h"
+  format = "pem"
+
+  common_name = "evelyn-todo-service.${var.services_namespace}.svc.cluster.local"
+
+  alt_names = [ "evelyn-todo-service.${var.services_namespace}.svc.cluster.local" ]
 }

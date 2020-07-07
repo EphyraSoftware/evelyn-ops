@@ -1,5 +1,5 @@
 locals {
-  namespace = "evelyn-services"
+  namespace         = "evelyn-services"
   image_pull_policy = "Always"
   image_registry    = "registry.evelyn.internal"
 
@@ -53,22 +53,34 @@ module "service-profile" {
 module "service-group" {
   source = "../../modules/services/group"
 
-  namespace = module.common.services_namespace_name
-  image = "${local.image_registry}:443/ephyrasoftware/group-service:latest"
-  image_pull_policy = local.image_pull_policy
-  image_pull_secret = module.common.pull_secret
-  mongo_connection_uri = local.mongodb_connection_uri
+  namespace                = module.common.services_namespace_name
+  image                    = "${local.image_registry}:443/ephyrasoftware/group-service:latest"
+  image_pull_policy        = local.image_pull_policy
+  image_pull_secret        = module.common.pull_secret
+  mongo_connection_uri     = local.mongodb_connection_uri
   profile_service_base_url = "https://${module.service-profile.service_name}.${local.namespace}.svc.cluster.local:8080"
 }
 
 module "service-task" {
   source = "../../modules/services/task"
 
-  namespace            = module.common.services_namespace_name
-  image                = "${local.image_registry}:443/ephyrasoftware/task-service:latest"
-  image_pull_policy    = local.image_pull_policy
-  image_pull_secret    = module.common.pull_secret
-  mongo_connection_uri = local.mongodb_connection_uri
+  namespace                = module.common.services_namespace_name
+  image                    = "${local.image_registry}:443/ephyrasoftware/task-service:latest"
+  image_pull_policy        = local.image_pull_policy
+  image_pull_secret        = module.common.pull_secret
+  mongo_connection_uri     = local.mongodb_connection_uri
+  profile_service_base_url = "https://${module.service-profile.service_name}.${local.namespace}.svc.cluster.local:8080"
+}
+
+module "service-todo" {
+  source = "../../modules/services/todo"
+
+  namespace                = module.common.services_namespace_name
+  image                    = "${local.image_registry}:443/ephyrasoftware/todo-service:latest"
+  image_pull_policy        = local.image_pull_policy
+  image_pull_secret        = module.common.pull_secret
+  mongo_connection_uri     = local.mongodb_connection_uri
+  profile_service_base_url = "https://${module.service-profile.service_name}.${local.namespace}.svc.cluster.local:8080"
 }
 
 //module "service-calendar" {
@@ -92,10 +104,12 @@ module "ingress" {
 
   namespace                = module.common.services_namespace_name
   external_shared_hostname = "service.evelyn.internal"
-  tasks_service_name       = module.service-task.service_name
-  tasks_service_port       = module.service-task.service_port
+  task_service_name       = module.service-task.service_name
+  task_service_port       = module.service-task.service_port
   profile_service_name     = module.service-profile.service_name
   profile_service_port     = module.service-profile.service_port
   group_service_name       = module.service-group.service_name
   group_service_port       = module.service-group.service_port
+  todo_service_name       = module.service-todo.service_name
+  todo_service_port       = module.service-todo.service_port
 }

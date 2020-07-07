@@ -39,8 +39,6 @@ variable spring_profiles_active {
 variable mongo_connection_uri {
   description = "The MongoDB connection URI."
   type = string
-
-  default = "mongodb://mongodb-replicaset.evelyn-platform:27017/"
 }
 
 variable keycloak_auth_url {

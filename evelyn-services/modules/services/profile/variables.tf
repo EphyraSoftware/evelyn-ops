@@ -20,8 +20,6 @@ variable "image" {
 variable "image_pull_secret" {
   description = "The image pull secret to use."
   type = string
-
-  default = "ghregcred"
 }
 
 variable profile_service_keystore_config_map_name {
@@ -41,8 +39,6 @@ variable spring_profiles_active {
 variable rabbitmq_host {
   description = "The RabbitMQ host."
   type = "string"
-
-  default = "rabbitmq.evelyn-platform"
 }
 
 variable rabbitmq_port {
@@ -55,8 +51,6 @@ variable rabbitmq_port {
 variable mongo_connection_uri {
   description = "The MongoDB connection URI."
   type = "string"
-
-  default = "mongodb://mongodb.evelyn-platform:27017/"
 }
 
 variable keycloak_auth_url {

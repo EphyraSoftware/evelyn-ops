@@ -1,6 +1,9 @@
 locals {
   image_pull_policy = "Always"
-  image_registry = "registry.evelyn.internal"
+  image_registry    = "registry.evelyn.internal"
+
+  mongodb_connection_uri = "mongodb://mongodb-replicaset.evelyn-platform:27017/"
+  rabbitmq_host          = "rabbitmq-ha.evelyn-platform"
 }
 
 //module "rabbitmq-config" {
@@ -11,7 +14,7 @@ module "common" {
   source = "../../modules/common"
 
   registry_hostname = "${local.image_registry}:443"
-  registry_email = "not-required@evelyn.internal"
+  registry_email    = "not-required@evelyn.internal"
 }
 
 //module "service-email-config" {
@@ -23,7 +26,7 @@ module "common" {
 module "keystore" {
   source = "../../modules/keystore"
 
-  namespace = module.common.services_namespace_name
+  namespace        = module.common.services_namespace_name
   trust_store_path = "\\\\nas.evelyn.internal\\terraform\\.files\\bundles\\truststore.p12"
 }
 
@@ -34,15 +37,18 @@ module "keystore" {
 //  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-email-service:dev"
 //  image_pull_policy = local.image_pull_policy
 //}
-//
-//module "service-profile" {
-//  source = "../../modules/services/profile"
-//
-//  namespace = module.common.services_namespace_name
-//  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-profile-service:dev"
-//  image_pull_policy = local.image_pull_policy
-//}
-//
+
+module "service-profile" {
+  source = "../../modules/services/profile"
+
+  namespace            = module.common.services_namespace_name
+  image                = "${local.image_registry}:443/ephyrasoftware/profile-service:latest"
+  image_pull_policy    = local.image_pull_policy
+  image_pull_secret    = module.common.pull_secret
+  mongo_connection_uri = local.mongodb_connection_uri
+  rabbitmq_host        = local.rabbitmq_host
+}
+
 //module "service-group" {
 //  source = "../../modules/services/group"
 //
@@ -54,10 +60,11 @@ module "keystore" {
 module "service-task" {
   source = "../../modules/services/task"
 
-  namespace = module.common.services_namespace_name
-  image = "${local.image_registry}:443/ephyrasoftware/task-service:latest"
-  image_pull_policy = local.image_pull_policy
-  image_pull_secret = module.common.pull_secret
+  namespace            = module.common.services_namespace_name
+  image                = "${local.image_registry}:443/ephyrasoftware/task-service:latest"
+  image_pull_policy    = local.image_pull_policy
+  image_pull_secret    = module.common.pull_secret
+  mongo_connection_uri = local.mongodb_connection_uri
 }
 
 //module "service-calendar" {
@@ -79,8 +86,8 @@ module "service-task" {
 module "ingress" {
   source = "../../modules/ingress"
 
-  namespace = module.common.services_namespace_name
+  namespace                = module.common.services_namespace_name
   external_shared_hostname = "service.evelyn.internal"
-  tasks_service_name = module.service-task.service_name
-  tasks_service_port = module.service-task.service_port
+  tasks_service_name       = module.service-task.service_name
+  tasks_service_port       = module.service-task.service_port
 }

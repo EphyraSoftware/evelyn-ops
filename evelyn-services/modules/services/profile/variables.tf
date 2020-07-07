@@ -57,5 +57,5 @@ variable keycloak_auth_url {
   description = "The Keycloak authentication URL."
   type = "string"
 
-  default = "https://keycloak.evelyn.internal:31739/auth"
+  default = "https://keycloak.evelyn.internal/auth"
 }

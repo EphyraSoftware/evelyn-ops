@@ -1,4 +1,5 @@
 locals {
+  namespace = "evelyn-services"
   image_pull_policy = "Always"
   image_registry    = "registry.evelyn.internal"
 
@@ -49,13 +50,16 @@ module "service-profile" {
   rabbitmq_host        = local.rabbitmq_host
 }
 
-//module "service-group" {
-//  source = "../../modules/services/group"
-//
-//  namespace = module.common.services_namespace_name
-//  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-group-service:dev"
-//  image_pull_policy = local.image_pull_policy
-//}
+module "service-group" {
+  source = "../../modules/services/group"
+
+  namespace = module.common.services_namespace_name
+  image = "${local.image_registry}:443/ephyrasoftware/group-service:latest"
+  image_pull_policy = local.image_pull_policy
+  image_pull_secret = module.common.pull_secret
+  mongo_connection_uri = local.mongodb_connection_uri
+  profile_service_base_url = "https://${module.service-profile.service_name}.${local.namespace}.svc.cluster.local:8080"
+}
 
 module "service-task" {
   source = "../../modules/services/task"
@@ -90,4 +94,8 @@ module "ingress" {
   external_shared_hostname = "service.evelyn.internal"
   tasks_service_name       = module.service-task.service_name
   tasks_service_port       = module.service-task.service_port
+  profile_service_name     = module.service-profile.service_name
+  profile_service_port     = module.service-profile.service_port
+  group_service_name       = module.service-group.service_name
+  group_service_port       = module.service-group.service_port
 }

@@ -7,9 +7,25 @@ variable "external_shared_hostname" {
 }
 
 variable "tasks_service_name" {
-  default = ""
+  type = string
 }
 
 variable "tasks_service_port" {
-  default = ""
+  type = string
+}
+
+variable "group_service_name" {
+  type = string
+}
+
+variable "group_service_port" {
+  type = string
+}
+
+variable "profile_service_name" {
+  type = string
+}
+
+variable "profile_service_port" {
+  type = string
 }

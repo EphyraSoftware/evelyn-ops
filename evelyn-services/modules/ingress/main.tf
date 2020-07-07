@@ -21,6 +21,30 @@ resource "kubernetes_ingress" "evelyn-services" {
         }
       }
     }
+    rule {
+      host = var.external_shared_hostname
+      http {
+        path {
+          path = "/profiles"
+          backend {
+            service_name = var.profile_service_name
+            service_port = var.profile_service_port
+          }
+        }
+      }
+    }
+    rule {
+      host = var.external_shared_hostname
+      http {
+        path {
+          path = "/tasks"
+          backend {
+            service_name = var.group_service_name
+            service_port = var.group_service_port
+          }
+        }
+      }
+    }
     tls {
       hosts = [ var.external_shared_hostname ]
       secret_name = kubernetes_secret.ingress-tls.metadata.0.name

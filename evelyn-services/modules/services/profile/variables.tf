@@ -24,7 +24,7 @@ variable "image_pull_secret" {
 
 variable profile_service_keystore_config_map_name {
   description = "The name of the config map which contains the profile service keystore."
-  type = "string"
+  type = string
 
   default = "profile-service-keystore"
 }
@@ -38,24 +38,24 @@ variable spring_profiles_active {
 
 variable rabbitmq_host {
   description = "The RabbitMQ host."
-  type = "string"
+  type = string
 }
 
 variable rabbitmq_port {
   description = "The RabbitMQ port."
-  type = "string"
+  type = string
 
   default = "5672"
 }
 
 variable mongo_connection_uri {
   description = "The MongoDB connection URI."
-  type = "string"
+  type = string
 }
 
 variable keycloak_auth_url {
   description = "The Keycloak authentication URL."
-  type = "string"
+  type = string
 
   default = "https://keycloak.evelyn.internal/auth"
 }

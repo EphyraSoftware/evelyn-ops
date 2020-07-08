@@ -1,3 +1,7 @@
+output "rabbitmq_hostname" {
+  value = local.rabbitmq_hostname
+}
+
 output "rabbitmq-management-user" {
   value = module.rabbitmq.rabbitmq-management-user
 }

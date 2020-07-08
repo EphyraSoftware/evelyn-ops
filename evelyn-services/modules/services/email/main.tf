@@ -56,6 +56,8 @@ resource "kubernetes_config_map" "email-service-config" {
     SPRING_PROFILES_ACTIVE = join(",", var.spring_profiles_active)
     RABBITMQ_HOST = var.rabbitmq_host
     RABBITMQ_PORT = var.rabbitmq_port
+    RABBITMQ_USERNAME = var.rabbitmq_username
+    RABBITMQ_PASSWORD = var.rabbitmq_password
     MAIL_HOST = var.mail_host
     MAIL_PORT = var.mail_port
     MAIL_USERNAME = var.mail_username

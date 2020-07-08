@@ -72,10 +72,10 @@ resource "kubernetes_config_map" "task-service-config" {
   }
 
   data = {
-    SPRING_PROFILES_ACTIVE = join(",", var.spring_profiles_active)
-    MONGO_CONNECTION_URI = var.mongo_connection_uri
-    KEYCLOAK_AUTH_URL = var.keycloak_auth_url
-    PROFILE_SERVICE_BASE_URL = var.profile_service_base_url
+    "SPRING_PROFILES_ACTIVE" = join(",", var.spring_profiles_active)
+    "MONGO_CONNECTION_URI" = var.mongo_connection_uri
+    "KEYCLOAK_AUTH_URL" = var.keycloak_auth_url
+    "PROFILE_SERVICE_BASE_URL" = var.profile_service_base_url
   }
 }
 

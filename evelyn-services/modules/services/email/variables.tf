@@ -20,48 +20,52 @@ variable "image" {
 variable "image_pull_secret" {
   description = "The image pull secret to use."
   type = string
-
-  default = "ghregcred"
 }
 
 variable rabbitmq_host {
-  type = "string"
-
-  default = "rabbitmq.evelyn-platform"
+  type = string
 }
 
 variable rabbitmq_port {
-  type = "string"
+  type = string
 
   default = "5672"
 }
 
+variable "rabbitmq_username" {
+  type = string
+}
+
+variable "rabbitmq_password" {
+  type = string
+}
+
 variable mail_host {
-  type = "string"
+  type = string
 
   default = "greenmail.evelyn-platform"
 }
 
 variable mail_port {
-  type = "string"
+  type = string
 
   default = "3025"
 }
 
 variable mail_username {
-  type = "string"
+  type = string
 
   default = "evelynmailer"
 }
 
 variable mail_password {
-  type = "string"
+  type = string
 
   default = "passwd"
 }
 
 variable mail_smtp_host {
-  type = "string"
+  type = string
 
   default = "greenmail.evelyn-platform"
 }

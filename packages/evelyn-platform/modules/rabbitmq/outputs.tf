@@ -1,7 +1,7 @@
 output "rabbitmq-management-user" {
-  value = data.kubernetes_secret.rabbitmq-ha.data["rabbitmq-management-username"]
+  value = local.rabbitmq_username
 }
 
 output "rabbitmq-management-password" {
-  value = data.kubernetes_secret.rabbitmq-ha.data["rabbitmq-management-password"]
+  value = random_password.rabbitmq-password.result
 }

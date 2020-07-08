@@ -3,7 +3,15 @@ provider "keystore" {
 }
 
 provider "rabbitmq" {
-  endpoint = "http://edge.evelyn.internal:32233"
-  username = "guest"
-  password = "guest"
+  endpoint = "https://${data.terraform_remote_state.evelyn-platform.outputs.rabbitmq_hostname}"
+  username = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-user
+  password = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-password
+}
+
+data "terraform_remote_state" "evelyn-platform" {
+  backend = "local"
+
+  config = {
+    path = "\\\\nas.evelyn.internal\\terraform\\edge\\evelyn-platform.tfstate"
+  }
 }

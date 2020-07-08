@@ -24,7 +24,7 @@ variable "image_pull_secret" {
 
 variable group_service_keystore_config_map_name {
   description = "The name of the config map which contains the group service keystore."
-  type = "string"
+  type = string
 
   default = "group-service-keystore"
 }
@@ -38,17 +38,17 @@ variable spring_profiles_active {
 
 variable mongo_connection_uri {
   description = "The MongoDB connection URI."
-  type = "string"
+  type = string
 }
 
 variable keycloak_auth_url {
   description = "The Keycloak authentication URL."
-  type = "string"
+  type = string
 
   default = "https://keycloak.evelyn.internal/auth"
 }
 
 variable profile_service_base_url {
   description = "The base URL of the profile service (with no trailing slash)."
-  type = "string"
+  type = string
 }

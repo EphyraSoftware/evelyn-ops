@@ -7,9 +7,9 @@ locals {
   rabbitmq_host          = "rabbitmq-ha.evelyn-platform"
 }
 
-//module "rabbitmq-config" {
-//  source = "../../modules/rabbitmq-config"
-//}
+module "rabbitmq-config" {
+  source = "../../modules/rabbitmq-config"
+}
 
 module "common" {
   source = "../../modules/common"
@@ -18,11 +18,11 @@ module "common" {
   registry_email    = "not-required@evelyn.internal"
 }
 
-//module "service-email-config" {
-//  source = "../../modules/services/email-config"
-//
-//  vhost_name = module.rabbitmq-config.vhost_name
-//}
+module "service-email-config" {
+  source = "../../modules/services/email-config"
+
+  vhost_name = module.rabbitmq-config.vhost_name
+}
 
 module "keystore" {
   source = "../../modules/keystore"
@@ -31,13 +31,17 @@ module "keystore" {
   trust_store_path = "\\\\nas.evelyn.internal\\terraform\\.files\\bundles\\truststore.p12"
 }
 
-//module "service-email" {
-//  source = "../../modules/services/email"
-//
-//  namespace = module.common.services_namespace_name
-//  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-email-service:dev"
-//  image_pull_policy = local.image_pull_policy
-//}
+module "service-email" {
+  source = "../../modules/services/email"
+
+  namespace         = module.common.services_namespace_name
+  image             = "${local.image_registry}:443/ephyrasoftware/email-service:latest"
+  image_pull_policy = local.image_pull_policy
+  image_pull_secret = module.common.pull_secret
+  rabbitmq_host     = local.rabbitmq_host
+  rabbitmq_username = module.service-email-config.email-user
+  rabbitmq_password = module.service-email-config.email-password
+}
 
 module "service-profile" {
   source = "../../modules/services/profile"
@@ -104,12 +108,12 @@ module "ingress" {
 
   namespace                = module.common.services_namespace_name
   external_shared_hostname = "service.evelyn.internal"
-  task_service_name       = module.service-task.service_name
-  task_service_port       = module.service-task.service_port
+  task_service_name        = module.service-task.service_name
+  task_service_port        = module.service-task.service_port
   profile_service_name     = module.service-profile.service_name
   profile_service_port     = module.service-profile.service_port
   group_service_name       = module.service-group.service_name
   group_service_port       = module.service-group.service_port
-  todo_service_name       = module.service-todo.service_name
-  todo_service_port       = module.service-todo.service_port
+  todo_service_name        = module.service-todo.service_name
+  todo_service_port        = module.service-todo.service_port
 }

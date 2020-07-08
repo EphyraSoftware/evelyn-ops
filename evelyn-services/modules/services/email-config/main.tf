@@ -1,5 +1,15 @@
+resource "random_password" "email-user" {
+  length = 10
+  special = false
+}
+
+resource "rabbitmq_user" "email" {
+  name     = "email"
+  password = random_password.email-user.result
+}
+
 resource "rabbitmq_permissions" "email" {
-  user = "guest"
+  user = rabbitmq_user.email.name
   vhost = var.vhost_name
 
   permissions {

@@ -4,7 +4,7 @@ locals {
   image_registry    = "registry.evelyn.internal"
 
   mongodb_connection_uri = "mongodb://mongodb-replicaset.evelyn-platform:27017/"
-  rabbitmq_host          = "rabbitmq-ha.evelyn-platform"
+  rabbitmq_host          = "rabbitmq.evelyn-platform"
 }
 
 module "rabbitmq-config" {

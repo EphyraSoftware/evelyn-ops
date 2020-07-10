@@ -41,7 +41,7 @@ module "service-email" {
   image_pull_secret = module.common.pull_secret
   rabbitmq_host     = local.rabbitmq_host
   # For some reason this authentication doesn't work, so root credentials it is... sadly
-  rabbitmq_username = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-user    # module.service-email-config.email-user
+  rabbitmq_username = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-user     # module.service-email-config.email-user
   rabbitmq_password = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-password # module.service-email-config.email-password
   mail_host         = local.mail_host
   mail_smtp_host    = local.mail_host
@@ -91,21 +91,20 @@ module "service-todo" {
   profile_service_base_url = "https://${module.service-profile.service_name}.${local.namespace}.svc.cluster.local:8080"
 }
 
-//module "service-calendar" {
-//  source = "../../modules/services/calendar"
-//
-//  namespace = module.common.services_namespace_name
-//  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-calendar-service:dev"
-//  image_pull_policy = local.image_pull_policy
-//}
-//
-//module "web-entry-point" {
-//  source = "../../modules/services/web-entry-point"
-//
-//  namespace = module.common.services_namespace_name
-//  image = "docker.pkg.github.com/ephyrasoftware/evelyn-service/evelyn-web-entry-point:dev"
-//  image_pull_policy = local.image_pull_policy
-//}
+module "service-calendar" {
+  source = "../../modules/services/calendar"
+
+  namespace            = module.common.services_namespace_name
+  image                = "${local.image_registry}:443/ephyrasoftware/calendar-service:dev"
+  image_pull_policy    = local.image_pull_policy
+  image_pull_secret    = module.common.pull_secret
+  mongo_connection_uri = local.mongodb_connection_uri
+  rabbitmq_host        = local.rabbitmq_host
+  # For some reason this authentication doesn't work, so root credentials it is... sadly
+  rabbitmq_username        = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-user     # module.service-email-config.email-user
+  rabbitmq_password        = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-password # module.service-email-config.email-password
+  profile_service_base_url = "https://${module.service-profile.service_name}.${local.namespace}.svc.cluster.local:8080"
+}
 
 module "ingress" {
   source = "../../modules/ingress"

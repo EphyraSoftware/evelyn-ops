@@ -95,7 +95,7 @@ module "service-calendar" {
   source = "../../modules/services/calendar"
 
   namespace            = module.common.services_namespace_name
-  image                = "${local.image_registry}:443/ephyrasoftware/calendar-service:dev"
+  image                = "${local.image_registry}:443/ephyrasoftware/calendar-service:latest"
   image_pull_policy    = local.image_pull_policy
   image_pull_secret    = module.common.pull_secret
   mongo_connection_uri = local.mongodb_connection_uri

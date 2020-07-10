@@ -1,6 +1,5 @@
 resource "random_password" "email-user" {
-  length = 10
-  special = false
+  length = 15
 }
 
 resource "rabbitmq_user" "email" {

@@ -42,14 +42,12 @@ variable "rabbitmq_password" {
 
 variable mail_host {
   type = string
-
-  default = "greenmail.evelyn-platform"
 }
 
 variable mail_port {
   type = string
 
-  default = "3025"
+  default = "8025"
 }
 
 variable mail_username {
@@ -66,8 +64,6 @@ variable mail_password {
 
 variable mail_smtp_host {
   type = string
-
-  default = "greenmail.evelyn-platform"
 }
 
 variable spring_profiles_active {

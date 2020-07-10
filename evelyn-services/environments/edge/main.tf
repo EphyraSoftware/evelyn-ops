@@ -5,6 +5,7 @@ locals {
 
   mongodb_connection_uri = "mongodb://mongodb-replicaset.evelyn-platform:27017/"
   rabbitmq_host          = "rabbitmq.evelyn-platform"
+  mail_host              = "mailhog.evelyn-platform"
 }
 
 module "rabbitmq-config" {
@@ -39,8 +40,11 @@ module "service-email" {
   image_pull_policy = local.image_pull_policy
   image_pull_secret = module.common.pull_secret
   rabbitmq_host     = local.rabbitmq_host
-  rabbitmq_username = module.service-email-config.email-user
-  rabbitmq_password = module.service-email-config.email-password
+  # For some reason this authentication doesn't work, so root credentials it is... sadly
+  rabbitmq_username = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-user    # module.service-email-config.email-user
+  rabbitmq_password = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-password # module.service-email-config.email-password
+  mail_host         = local.mail_host
+  mail_smtp_host    = local.mail_host
 }
 
 module "service-profile" {

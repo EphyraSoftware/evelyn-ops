@@ -9,31 +9,31 @@ locals {
 }
 
 module "rabbitmq-config" {
-  source = "../../modules/rabbitmq-config"
+  source = "..\/..\/modules\/rabbitmq-config"
 }
 
 module "common" {
-  source = "../../modules/common"
+  source = "..\/..\/modules\/common"
 
   registry_hostname = "${local.image_registry}:443"
   registry_email    = "not-required@evelyn.internal"
 }
 
 module "service-email-config" {
-  source = "../../modules/services/email-config"
+  source = "..\/..\/modules\/services\/email-config"
 
   vhost_name = module.rabbitmq-config.vhost_name
 }
 
 module "keystore" {
-  source = "../../modules/keystore"
+  source = "..\/..\/modules\/keystore"
 
   namespace        = module.common.services_namespace_name
   trust_store_path = "\\\\nas.evelyn.internal\\terraform\\.files\\bundles\\truststore.p12"
 }
 
 module "service-email" {
-  source = "../../modules/services/email"
+  source = "..\/..\/modules\/services\/email"
 
   namespace         = module.common.services_namespace_name
   image             = "${local.image_registry}:443/ephyrasoftware/email-service:latest"
@@ -48,7 +48,7 @@ module "service-email" {
 }
 
 module "service-profile" {
-  source = "../../modules/services/profile"
+  source = "..\/..\/modules\/services\/profile"
 
   namespace            = module.common.services_namespace_name
   image                = "${local.image_registry}:443/ephyrasoftware/profile-service:latest"
@@ -59,7 +59,7 @@ module "service-profile" {
 }
 
 module "service-group" {
-  source = "../../modules/services/group"
+  source = "..\/..\/modules\/services\/group"
 
   namespace                = module.common.services_namespace_name
   image                    = "${local.image_registry}:443/ephyrasoftware/group-service:latest"
@@ -70,7 +70,7 @@ module "service-group" {
 }
 
 module "service-task" {
-  source = "../../modules/services/task"
+  source = "..\/..\/modules\/services\/task"
 
   namespace                = module.common.services_namespace_name
   image                    = "${local.image_registry}:443/ephyrasoftware/task-service:latest"
@@ -81,7 +81,7 @@ module "service-task" {
 }
 
 module "service-todo" {
-  source = "../../modules/services/todo"
+  source = "..\/..\/modules\/services\/todo"
 
   namespace                = module.common.services_namespace_name
   image                    = "${local.image_registry}:443/ephyrasoftware/todo-service:latest"
@@ -92,7 +92,7 @@ module "service-todo" {
 }
 
 module "service-calendar" {
-  source = "../../modules/services/calendar"
+  source = "..\/..\/modules\/services\/calendar"
 
   namespace            = module.common.services_namespace_name
   image                = "${local.image_registry}:443/ephyrasoftware/calendar-service:latest"
@@ -107,7 +107,7 @@ module "service-calendar" {
 }
 
 module "ingress" {
-  source = "../../modules/ingress"
+  source = "..\/..\/modules\/ingress"
 
   namespace                = module.common.services_namespace_name
   external_shared_hostname = "service.evelyn.internal"

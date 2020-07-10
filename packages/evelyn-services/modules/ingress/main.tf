@@ -57,6 +57,18 @@ resource "kubernetes_ingress" "evelyn-services" {
         }
       }
     }
+    rule {
+      host = var.external_shared_hostname
+      http {
+        path {
+          path = "/calendars"
+          backend {
+            service_name = var.calendar_service_name
+            service_port = var.calendar_service_port
+          }
+        }
+      }
+    }
     tls {
       hosts       = [var.external_shared_hostname]
       secret_name = kubernetes_secret.ingress-tls.metadata.0.name

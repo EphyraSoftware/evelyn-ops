@@ -37,3 +37,11 @@ variable "todo_service_name" {
 variable "todo_service_port" {
   type = string
 }
+
+variable "calendar_service_name" {
+  type = string
+}
+
+variable "calendar_service_port" {
+  type = string
+}

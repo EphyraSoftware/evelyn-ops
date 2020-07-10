@@ -39,7 +39,7 @@ resource "kubernetes_deployment" "group-service" {
           }
 
           port {
-            name           = "http"
+            name           = "https"
             container_port = 8080
           }
 
@@ -93,7 +93,7 @@ resource "kubernetes_service" "group-service" {
     type = "ClusterIP"
 
     port {
-      name = "http"
+      name = "https"
       port = 8080
     }
 

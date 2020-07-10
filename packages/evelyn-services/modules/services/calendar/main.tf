@@ -39,7 +39,7 @@ resource "kubernetes_deployment" "calendar-service" {
           }
 
           port {
-            name           = "http"
+            name           = "https"
             container_port = 8080
           }
 
@@ -97,7 +97,7 @@ resource "kubernetes_service" "calendar-service" {
     type = "ClusterIP"
 
     port {
-      name = "http"
+      name = "https"
       port = 8080
     }
 

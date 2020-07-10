@@ -39,7 +39,7 @@ resource "kubernetes_deployment" "profile-service" {
           }
 
           port {
-            name           = "http"
+            name           = "https"
             container_port = 8080
           }
 
@@ -94,7 +94,7 @@ resource "kubernetes_service" "profile-service" {
     type = "ClusterIP"
 
     port {
-      name = "http"
+      name = "https"
       port = 8080
     }
 

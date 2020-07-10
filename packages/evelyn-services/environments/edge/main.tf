@@ -119,4 +119,6 @@ module "ingress" {
   group_service_port       = module.service-group.service_port
   todo_service_name        = module.service-todo.service_name
   todo_service_port        = module.service-todo.service_port
+  calendar_service_name    = module.service-calendar.service_name
+  calendar_service_port    = module.service-calendar.service_port
 }

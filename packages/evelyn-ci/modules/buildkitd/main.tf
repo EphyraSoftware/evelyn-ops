@@ -9,7 +9,7 @@ resource "kubernetes_deployment" "buildkitd" {
       app = local.name
     }
 
-    name = local.name
+    name      = local.name
     namespace = var.namespace
   }
 
@@ -36,7 +36,7 @@ resource "kubernetes_deployment" "buildkitd" {
 
       spec {
         init_container {
-          name = "add-ca"
+          name  = "add-ca"
           image = "alpine:latest"
           command = [
             "sh", "-c",
@@ -45,18 +45,18 @@ resource "kubernetes_deployment" "buildkitd" {
 
           volume_mount {
             mount_path = "/tmp"
-            name = "trusted-certs"
+            name       = "trusted-certs"
           }
 
           volume_mount {
             mount_path = "/certs"
-            name = "certs"
-            read_only = true
+            name       = "certs"
+            read_only  = true
           }
         }
 
         container {
-          name = local.name
+          name  = local.name
           image = "moby/buildkit:${var.image_tag}"
 
           args = [
@@ -70,7 +70,7 @@ resource "kubernetes_deployment" "buildkitd" {
           ]
 
           env {
-            name = "DOCKER_CONFIG"
+            name  = "DOCKER_CONFIG"
             value = "/docker-config"
           }
 
@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "buildkitd" {
             }
 
             initial_delay_seconds = 5
-            period_seconds = 30
+            period_seconds        = 30
           }
 
           liveness_probe {
@@ -97,7 +97,7 @@ resource "kubernetes_deployment" "buildkitd" {
             }
 
             initial_delay_seconds = 5
-            period_seconds = 30
+            period_seconds        = 30
           }
 
           port {
@@ -106,26 +106,26 @@ resource "kubernetes_deployment" "buildkitd" {
 
           volume_mount {
             mount_path = "/certs"
-            name = "certs"
-            read_only = true
+            name       = "certs"
+            read_only  = true
           }
 
           volume_mount {
             mount_path = "/docker-config"
-            name = "docker-config"
-            read_only = true
+            name       = "docker-config"
+            read_only  = true
           }
 
           volume_mount {
             mount_path = "/etc/ssl/certs"
-            name = "trusted-certs"
+            name       = "trusted-certs"
           }
         }
 
         volume {
           name = "certs"
           secret {
-            secret_name = kubernetes_secret.certs.metadata.0.name
+            secret_name  = kubernetes_secret.certs.metadata.0.name
             default_mode = "0644"
           }
         }
@@ -133,7 +133,7 @@ resource "kubernetes_deployment" "buildkitd" {
         volume {
           name = "docker-config"
           secret {
-            secret_name = kubernetes_secret.docker-config.metadata.0.name
+            secret_name  = kubernetes_secret.docker-config.metadata.0.name
             default_mode = "0644"
           }
         }
@@ -153,12 +153,12 @@ resource "kubernetes_service" "buildkitd" {
       app = local.name
     }
 
-    name = local.name
+    name      = local.name
     namespace = var.namespace
   }
   spec {
     port {
-      port = var.port
+      port     = var.port
       protocol = "TCP"
     }
 
@@ -170,7 +170,7 @@ resource "kubernetes_service" "buildkitd" {
 
 resource "kubernetes_secret" "ingress-certs" {
   metadata {
-    name = "${local.name}-ingress-certs"
+    name      = "${local.name}-ingress-certs"
     namespace = var.namespace
   }
 
@@ -184,20 +184,20 @@ resource "kubernetes_secret" "ingress-certs" {
 
 resource "kubernetes_secret" "certs" {
   metadata {
-    name = "${local.name}-certs"
+    name      = "${local.name}-certs"
     namespace = var.namespace
   }
 
   data = {
-    "ca.pem" = file("\\\\nas.evelyn.internal\\terraform\\.files\\vault-ca\\ca-bundle.pem"),
+    "ca.pem"   = file("\\\\nas.evelyn.internal\\terraform\\.files\\vault-ca\\ca-bundle.pem"),
     "cert.pem" = vault_pki_secret_backend_cert.buildkitd-server.certificate,
-    "key.pem" = vault_pki_secret_backend_cert.buildkitd-server.private_key
+    "key.pem"  = vault_pki_secret_backend_cert.buildkitd-server.private_key
   }
 }
 
 locals {
   dockerconfigjson = {
-    "auths": {
+    "auths" : {
       (var.registry) = {
         username = var.registry_username
         password = var.registry_password
@@ -210,7 +210,7 @@ locals {
 
 resource "kubernetes_secret" "docker-config" {
   metadata {
-    name = "${local.name}-regcred"
+    name      = "${local.name}-regcred"
     namespace = var.namespace
   }
 

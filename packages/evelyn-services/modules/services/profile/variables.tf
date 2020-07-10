@@ -1,61 +1,61 @@
 variable "namespace" {
   description = "The k8s namespace."
-  type = string
+  type        = string
 
   default = "evelyn-services"
 }
 
 variable "image_pull_policy" {
   description = "The value for image pull policy."
-  type = string
+  type        = string
 
   default = "IfNotPresent"
 }
 
 variable "image" {
   description = "The container image to use."
-  type = string
+  type        = string
 }
 
 variable "image_pull_secret" {
   description = "The image pull secret to use."
-  type = string
+  type        = string
 }
 
 variable profile_service_keystore_config_map_name {
   description = "The name of the config map which contains the profile service keystore."
-  type = string
+  type        = string
 
   default = "profile-service-keystore"
 }
 
 variable spring_profiles_active {
   description = "The Spring profiles which should be active."
-  type = list(string)
+  type        = list(string)
 
   default = ["prod"]
 }
 
 variable rabbitmq_host {
   description = "The RabbitMQ host."
-  type = string
+  type        = string
 }
 
 variable rabbitmq_port {
   description = "The RabbitMQ port."
-  type = string
+  type        = string
 
   default = "5672"
 }
 
 variable mongo_connection_uri {
   description = "The MongoDB connection URI."
-  type = string
+  type        = string
 }
 
 variable keycloak_auth_url {
   description = "The Keycloak authentication URL."
-  type = string
+  type        = string
 
   default = "https://keycloak.evelyn.internal/auth"
 }

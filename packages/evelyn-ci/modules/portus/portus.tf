@@ -1,6 +1,6 @@
 resource "kubernetes_deployment" "portus" {
   metadata {
-    name = "portus"
+    name      = "portus"
     namespace = var.namespace
 
     labels = {
@@ -24,37 +24,37 @@ resource "kubernetes_deployment" "portus" {
       }
       spec {
         init_container {
-          name = "copy-static-content"
+          name  = "copy-static-content"
           image = "opensuse/portus:head"
 
           command = ["/bin/sh", "-c", "cp -a /srv/Portus/public/. /tmp/portus-static-content/"]
 
           volume_mount {
             mount_path = "/tmp/portus-static-content"
-            name = "portus-static-content"
+            name       = "portus-static-content"
           }
         }
 
         init_container {
-          name = "update-trust"
+          name  = "update-trust"
           image = "opensuse/portus:head"
 
           command = ["/bin/sh", "-c", "cp /ca/portus-ca-bundle.crt /usr/local/share/ca-certificates && update-ca-certificates && cp -a /etc/ssl/certs/. /tmp"]
 
           volume_mount {
             mount_path = "/ca"
-            name = "portus-ca-bundle"
+            name       = "portus-ca-bundle"
           }
 
           volume_mount {
             mount_path = "/tmp"
-            name = "certs"
+            name       = "certs"
           }
         }
 
         container {
-          name = "portus"
-          image = "opensuse/portus:head"
+          name              = "portus"
+          image             = "opensuse/portus:head"
           image_pull_policy = "IfNotPresent"
 
           command = ["/bin/sh", "/init"]
@@ -76,19 +76,19 @@ resource "kubernetes_deployment" "portus" {
           }
 
           volume_mount {
-            name = "certificates"
+            name       = "certificates"
             mount_path = "/certificates"
-            read_only = true
+            read_only  = true
           }
 
           volume_mount {
             mount_path = "/srv/Portus/public"
-            name = "portus-static-content"
+            name       = "portus-static-content"
           }
 
           volume_mount {
             mount_path = "/etc/ssl/certs/"
-            name = "certs"
+            name       = "certs"
           }
         }
 
@@ -124,7 +124,7 @@ resource "kubernetes_deployment" "portus" {
 
 resource "kubernetes_service" "portus" {
   metadata {
-    name = "portus"
+    name      = "portus"
     namespace = var.namespace
   }
   spec {
@@ -142,7 +142,7 @@ resource "kubernetes_service" "portus" {
 
 resource "kubernetes_secret" "portus-ca-bundle" {
   metadata {
-    name = "portus-ca-bundle"
+    name      = "portus-ca-bundle"
     namespace = var.namespace
   }
   data = {
@@ -152,11 +152,11 @@ resource "kubernetes_secret" "portus-ca-bundle" {
 
 resource "kubernetes_persistent_volume_claim" "portus-static-content" {
   metadata {
-    name = "portus-static-content"
+    name      = "portus-static-content"
     namespace = var.namespace
   }
   spec {
-    access_modes = ["ReadWriteMany"]
+    access_modes       = ["ReadWriteMany"]
     storage_class_name = var.shared_storage_class_name
     resources {
       requests = {

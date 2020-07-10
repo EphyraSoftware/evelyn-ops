@@ -1,6 +1,6 @@
 data "helm_repository" "rook" {
   name = "rook-release"
-  url = "https://charts.rook.io/release"
+  url  = "https://charts.rook.io/release"
 }
 
 resource "kubernetes_namespace" "rook-ceph" {
@@ -10,14 +10,14 @@ resource "kubernetes_namespace" "rook-ceph" {
 }
 
 resource "k8s-yaml_raw" "common" {
-  name = "common"
+  name     = "common"
   file_url = "https://raw.githubusercontent.com/rook/rook/v1.3.1/cluster/examples/kubernetes/ceph/common.yaml"
 }
 
 resource "k8s-yaml_raw" "operator" {
   depends_on = [k8s-yaml_raw.common]
 
-  name = "operator"
+  name     = "operator"
   file_url = "https://raw.githubusercontent.com/rook/rook/v1.3.1/cluster/examples/kubernetes/ceph/operator.yaml"
 }
 
@@ -33,27 +33,27 @@ resource "k8s-yaml_raw" "cluster" {
 resource "k8s-yaml_raw" "block-storage" {
   depends_on = [k8s-yaml_raw.operator]
 
-  name = "block-storage"
+  name     = "block-storage"
   file_url = "https://raw.githubusercontent.com/rook/rook/v1.3.1/cluster/examples/kubernetes/ceph/csi/rbd/storageclass-test.yaml"
 }
 
 resource "k8s-yaml_raw" "file-system" {
   depends_on = [k8s-yaml_raw.operator]
 
-  name = "file-system"
+  name     = "file-system"
   file_url = "https://raw.githubusercontent.com/rook/rook/v1.3.1/cluster/examples/kubernetes/ceph/filesystem-test.yaml"
 }
 
 resource "k8s-yaml_raw" "file-system-storage-class" {
   depends_on = [k8s-yaml_raw.file-system]
 
-  name = "file-system-storage-class"
+  name     = "file-system-storage-class"
   file_url = "https://raw.githubusercontent.com/rook/rook/v1.3.1/cluster/examples/kubernetes/ceph/csi/cephfs/storageclass.yaml"
 }
 
 resource "k8s-yaml_raw" "toolbox" {
   depends_on = [k8s-yaml_raw.operator]
 
-  name = "toolbox"
+  name     = "toolbox"
   file_url = "https://raw.githubusercontent.com/rook/rook/v1.3.1/cluster/examples/kubernetes/ceph/toolbox.yaml"
 }

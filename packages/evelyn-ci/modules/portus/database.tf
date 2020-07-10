@@ -1,6 +1,6 @@
 resource "kubernetes_deployment" "portus-db" {
   metadata {
-    name = "portus-db"
+    name      = "portus-db"
     namespace = var.namespace
 
     labels = {
@@ -23,24 +23,24 @@ resource "kubernetes_deployment" "portus-db" {
       }
       spec {
         container {
-          name = "portus-db"
+          name  = "portus-db"
           image = "library/mariadb:10.0.23"
 
           args = ["--character-set-server=utf8", "--collation-server=utf8_unicode_ci", "--init-connect='SET NAMES UTF8;'", "--innodb-flush-log-at-trx-commit=0"]
 
           env {
-            name = "MYSQL_DATABASE"
+            name  = "MYSQL_DATABASE"
             value = local.database_name
           }
 
           env {
-            name = "MYSQL_ROOT_PASSWORD"
+            name  = "MYSQL_ROOT_PASSWORD"
             value = random_password.db.result
           }
 
           volume_mount {
             mount_path = "/var/lib/mysql"
-            name = "portus-db-storage"
+            name       = "portus-db-storage"
           }
 
           port {
@@ -61,11 +61,11 @@ resource "kubernetes_deployment" "portus-db" {
 
 resource "kubernetes_persistent_volume_claim" "portus-db" {
   metadata {
-    name = "portus-db-storage"
+    name      = "portus-db-storage"
     namespace = var.namespace
   }
   spec {
-    access_modes = ["ReadWriteOnce"]
+    access_modes       = ["ReadWriteOnce"]
     storage_class_name = var.storage_class_name
     resources {
       requests = {
@@ -77,7 +77,7 @@ resource "kubernetes_persistent_volume_claim" "portus-db" {
 
 resource "kubernetes_service" "portus-db" {
   metadata {
-    name = "portus-db"
+    name      = "portus-db"
     namespace = var.namespace
   }
   spec {

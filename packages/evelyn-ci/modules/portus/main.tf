@@ -3,12 +3,12 @@ locals {
 }
 
 resource "random_password" "db" {
-  length = 20
+  length  = 20
   special = false
 }
 
 resource "random_password" "portus_password" {
-  length = 25
+  length  = 25
   special = false
 }
 

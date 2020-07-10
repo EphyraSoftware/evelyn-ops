@@ -1,25 +1,25 @@
 variable "namespace" {
   description = "The k8s namespace."
-  type = string
+  type        = string
 
   default = "evelyn-services"
 }
 
 variable "image_pull_policy" {
   description = "The value for image pull policy."
-  type = string
+  type        = string
 
   default = "IfNotPresent"
 }
 
 variable "image" {
   description = "The container image to use."
-  type = string
+  type        = string
 }
 
 variable "image_pull_secret" {
   description = "The image pull secret to use."
-  type = string
+  type        = string
 }
 
 variable rabbitmq_host {

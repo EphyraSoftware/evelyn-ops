@@ -1,9 +1,9 @@
 variable "services_namespace" {
-  type = string
+  type    = string
   default = "evelyn-services"
 }
 
 variable "hostname" {
-  type = string
+  type        = string
   description = "The hostname of the Vault instance"
 }

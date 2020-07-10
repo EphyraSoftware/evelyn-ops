@@ -1,6 +1,6 @@
 resource "kubernetes_deployment" "nginx" {
   metadata {
-    name = "nginx"
+    name      = "nginx"
     namespace = var.namespace
 
     labels = {
@@ -23,7 +23,7 @@ resource "kubernetes_deployment" "nginx" {
       }
       spec {
         container {
-          name = "nginx"
+          name  = "nginx"
           image = "nginx:alpine"
 
           port {
@@ -31,20 +31,20 @@ resource "kubernetes_deployment" "nginx" {
           }
 
           volume_mount {
-            name = "certificates"
+            name       = "certificates"
             mount_path = "/certificates"
-            read_only = true
+            read_only  = true
           }
 
           volume_mount {
             mount_path = "/srv/Portus/public"
-            name = "portus-static-content"
+            name       = "portus-static-content"
           }
 
           volume_mount {
             mount_path = "/etc/nginx/nginx.conf"
-            name = "nginx-conf"
-            sub_path = "nginx.conf"
+            name       = "nginx-conf"
+            sub_path   = "nginx.conf"
           }
         }
 
@@ -75,7 +75,7 @@ resource "kubernetes_deployment" "nginx" {
 
 resource "kubernetes_config_map" "nginx-conf" {
   metadata {
-    name = "nginx-conf"
+    name      = "nginx-conf"
     namespace = var.namespace
   }
 
@@ -86,7 +86,7 @@ resource "kubernetes_config_map" "nginx-conf" {
 
 resource "kubernetes_service" "nginx" {
   metadata {
-    name = "nginx"
+    name      = "nginx"
     namespace = var.namespace
   }
   spec {

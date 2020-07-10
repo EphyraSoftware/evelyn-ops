@@ -1,9 +1,9 @@
 resource "helm_release" "kibana" {
-  name = "kibana"
-  namespace = var.namespace
+  name       = "kibana"
+  namespace  = var.namespace
   repository = "https://helm.elastic.co"
-  chart = "kibana"
-  version = "7.7.1"
+  chart      = "kibana"
+  version    = "7.7.1"
 
   timeout = 900
 

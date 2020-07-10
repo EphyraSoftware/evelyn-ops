@@ -4,7 +4,7 @@ locals {
 
 resource "kubernetes_deployment" "todo-service" {
   metadata {
-    name = local.service_name
+    name      = local.service_name
     namespace = var.namespace
 
     labels = {
@@ -28,9 +28,9 @@ resource "kubernetes_deployment" "todo-service" {
       }
       spec {
         container {
-          name = local.service_name
+          name              = local.service_name
           image_pull_policy = var.image_pull_policy
-          image = var.image
+          image             = var.image
 
           env_from {
             config_map_ref {
@@ -39,14 +39,14 @@ resource "kubernetes_deployment" "todo-service" {
           }
 
           port {
-            name = "https"
+            name           = "https"
             container_port = 8080
           }
 
           volume_mount {
-            name = "keystore"
+            name       = "keystore"
             mount_path = "/etc/evelyn"
-            read_only = true
+            read_only  = true
           }
         }
 
@@ -67,21 +67,21 @@ resource "kubernetes_deployment" "todo-service" {
 
 resource "kubernetes_config_map" "todo-service-config" {
   metadata {
-    name = "${local.service_name}-config"
+    name      = "${local.service_name}-config"
     namespace = var.namespace
   }
 
   data = {
-    "SPRING_PROFILES_ACTIVE" = join(",", var.spring_profiles_active)
-    "MONGO_CONNECTION_URI" = var.mongo_connection_uri
-    "KEYCLOAK_AUTH_URL" = var.keycloak_auth_url
+    "SPRING_PROFILES_ACTIVE"   = join(",", var.spring_profiles_active)
+    "MONGO_CONNECTION_URI"     = var.mongo_connection_uri
+    "KEYCLOAK_AUTH_URL"        = var.keycloak_auth_url
     "PROFILE_SERVICE_BASE_URL" = var.profile_service_base_url
   }
 }
 
 resource "kubernetes_service" "todo-service" {
   metadata {
-    name = local.service_name
+    name      = local.service_name
     namespace = var.namespace
 
     labels = {

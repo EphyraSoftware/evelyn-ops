@@ -1,27 +1,27 @@
 variable "namespace" {
-  type = string
+  type        = string
   description = "The namespace to deploy to."
 }
 
 variable "image_tag" {
-  type = string
+  type        = string
   description = "The image tag to use for moby/buildkit."
-  default = "master-rootless"
+  default     = "master-rootless"
 }
 
 variable "port" {
-  type = number
+  type        = number
   description = "The port to expose the buildkit daemon on."
-  default = 8999
+  default     = 8999
 }
 
 variable "ingress_hostname" {
-  type = string
+  type        = string
   description = "The ingress hostname to use"
 }
 
 variable "registry" {
-  type = string
+  type    = string
   default = "docker.pkg.github.com"
 }
 

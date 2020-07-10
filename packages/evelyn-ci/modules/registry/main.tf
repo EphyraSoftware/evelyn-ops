@@ -4,18 +4,18 @@ locals {
 
 resource "vault_pki_secret_backend_cert" "registry" {
   backend = "pki_intermediate"
-  name = "evelyn-internal-role"
+  name    = "evelyn-internal-role"
 
   auto_renew = true
-  ttl = "720h"
-  format = "pem"
+  ttl        = "720h"
+  format     = "pem"
 
   common_name = var.hostname
 }
 
 resource "kubernetes_secret" "registry-ca" {
   metadata {
-    name = "registry-ca"
+    name      = "registry-ca"
     namespace = var.namespace
   }
 
@@ -28,7 +28,7 @@ resource "kubernetes_secret" "registry-ca" {
 
 resource "kubernetes_secret" "registry-tls" {
   metadata {
-    name = "registry-tls"
+    name      = "registry-tls"
     namespace = var.namespace
   }
 
@@ -42,7 +42,7 @@ resource "kubernetes_secret" "registry-tls" {
 
 resource "kubernetes_secret" "registry-auth" {
   metadata {
-    name = "registry-auth"
+    name      = "registry-auth"
     namespace = var.namespace
   }
 
@@ -52,13 +52,13 @@ resource "kubernetes_secret" "registry-auth" {
 }
 
 resource "random_password" "admin_password" {
-  length = 10
+  length  = 10
   special = false
 }
 
 resource "kubernetes_deployment" "registry" {
   metadata {
-    name = "registry"
+    name      = "registry"
     namespace = var.namespace
 
     labels = {
@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "registry" {
       }
       spec {
         init_container {
-          name = "update-certificates"
+          name  = "update-certificates"
           image = "registry:2.7.0"
 
           command = [
@@ -94,17 +94,17 @@ resource "kubernetes_deployment" "registry" {
 
           volume_mount {
             mount_path = "/tmp/ca"
-            name = "ca"
+            name       = "ca"
           }
 
           volume_mount {
             mount_path = "/tmp/certs"
-            name = "ca-certs"
+            name       = "ca-certs"
           }
         }
 
         init_container {
-          name = "create-user"
+          name  = "create-user"
           image = "registry:2.7.0" # TODO https://github.com/docker/docker.github.io/issues/11060
 
           command = [
@@ -114,77 +114,77 @@ resource "kubernetes_deployment" "registry" {
 
           volume_mount {
             mount_path = "/tmp/auth"
-            name = "registry-auth"
+            name       = "registry-auth"
           }
 
           volume_mount {
             mount_path = "/etc/auth"
-            name = "registry-htpasswd"
+            name       = "registry-htpasswd"
           }
         }
 
         container {
-          name = "registry"
+          name  = "registry"
           image = "registry:2.7.0"
 
           port {
-            name = "https"
+            name           = "https"
             container_port = 5000
           }
 
           env {
-            name = "REGISTRY_HTTP_ADDR"
+            name  = "REGISTRY_HTTP_ADDR"
             value = "0.0.0.0:5000"
           }
 
           env {
-            name = "REGISTRY_HTTP_TLS_CERTIFICATE"
+            name  = "REGISTRY_HTTP_TLS_CERTIFICATE"
             value = "/certs/tls.crt"
           }
 
           env {
-            name = "REGISTRY_HTTP_TLS_KEY"
+            name  = "REGISTRY_HTTP_TLS_KEY"
             value = "/certs/tls.key"
           }
 
           env {
-            name = "REGISTRY_AUTH"
+            name  = "REGISTRY_AUTH"
             value = "htpasswd"
           }
 
           env {
-            name = "REGISTRY_AUTH_HTPASSWD_REALM"
+            name  = "REGISTRY_AUTH_HTPASSWD_REALM"
             value = "Registry Realm"
           }
 
           env {
-            name = "REGISTRY_AUTH_HTPASSWD_PATH"
+            name  = "REGISTRY_AUTH_HTPASSWD_PATH"
             value = "/etc/auth/htpasswd"
           }
 
           env {
-            name = "REGISTRY_LOG_LEVEL"
+            name  = "REGISTRY_LOG_LEVEL"
             value = "debug"
           }
 
           volume_mount {
             mount_path = "/var/lib/registry"
-            name = "registry-storage"
+            name       = "registry-storage"
           }
 
           volume_mount {
             mount_path = "/certs"
-            name = "tls"
+            name       = "tls"
           }
 
           volume_mount {
             mount_path = "/etc/ssl/certs/"
-            name = "ca-certs"
+            name       = "ca-certs"
           }
 
           volume_mount {
             mount_path = "/etc/auth"
-            name = "registry-htpasswd"
+            name       = "registry-htpasswd"
           }
         }
 
@@ -232,7 +232,7 @@ resource "kubernetes_deployment" "registry" {
 
 resource "kubernetes_persistent_volume_claim" "registry_storage" {
   metadata {
-    name = "registry-storage"
+    name      = "registry-storage"
     namespace = var.namespace
 
     labels = {
@@ -254,7 +254,7 @@ resource "kubernetes_persistent_volume_claim" "registry_storage" {
 
 resource "kubernetes_service" "registry" {
   metadata {
-    name = "registry"
+    name      = "registry"
     namespace = var.namespace
 
     labels = {

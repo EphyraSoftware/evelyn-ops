@@ -4,5 +4,5 @@ output "ca" {
 
 resource "local_file" "ca" {
   filename = "ca.pem"
-  content = module.vault.ca
+  content  = module.vault.ca
 }

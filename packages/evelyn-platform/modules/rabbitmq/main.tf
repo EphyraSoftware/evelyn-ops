@@ -15,27 +15,27 @@ resource "helm_release" "rabbitmq" {
   ]
 
   set {
-    name = "auth.username"
+    name  = "auth.username"
     value = local.rabbitmq_username
   }
 
   set {
-    name = "auth.password"
+    name  = "auth.password"
     value = random_password.rabbitmq-password.result
   }
 
   set {
-    name = "ingress.hostname"
+    name  = "ingress.hostname"
     value = var.rabbitmq_hostname
   }
 
   set {
-    name = "ingress.existingSecret"
+    name  = "ingress.existingSecret"
     value = kubernetes_secret.rabbitmq-tls.metadata.0.name
   }
 }
 
 resource "random_password" "rabbitmq-password" {
-  length = 22
+  length  = 22
   special = false
 }

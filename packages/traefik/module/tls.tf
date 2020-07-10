@@ -2,11 +2,11 @@ resource "vault_pki_secret_backend_role" "traefik" {
   backend = "pki_intermediate"
   name    = "traefik-role"
 
-  max_ttl = "2592000"
-  allow_subdomains = true
+  max_ttl                            = "2592000"
+  allow_subdomains                   = true
   basic_constraints_valid_for_non_ca = true
-  allow_bare_domains = true
-  allowed_domains = [ "evelyn.internal" ]
+  allow_bare_domains                 = true
+  allowed_domains                    = ["evelyn.internal"]
 
   key_usage = [
     "DigitalSignature",
@@ -18,10 +18,10 @@ resource "vault_pki_secret_backend_role" "traefik" {
 
 resource "vault_pki_secret_backend_cert" "traefik" {
   backend = "pki_intermediate"
-  name = vault_pki_secret_backend_role.traefik.name
+  name    = vault_pki_secret_backend_role.traefik.name
 
   auto_renew = true
-  ttl = "720h"
+  ttl        = "720h"
 
   format = "pem"
 
@@ -30,7 +30,7 @@ resource "vault_pki_secret_backend_cert" "traefik" {
 
 resource "kubernetes_secret" "traefik-tls" {
   metadata {
-    name = "traefik-tls"
+    name      = "traefik-tls"
     namespace = var.namespace
   }
 

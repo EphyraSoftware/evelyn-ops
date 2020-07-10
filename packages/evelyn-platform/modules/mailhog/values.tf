@@ -1,9 +1,9 @@
 variable "namespace" {
-  type = string
+  type        = string
   description = "The namespace to deploy to"
 }
 
 variable "hostname" {
-  type = string
+  type        = string
   description = "The hostname to use for ingress"
 }

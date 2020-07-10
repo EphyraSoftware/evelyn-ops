@@ -1,11 +1,11 @@
 output "client-cert-pem" {
   sensitive = true
-  value = module.buildkit.client-cert-pem
+  value     = module.buildkit.client-cert-pem
 }
 
 output "client-cert-key" {
   sensitive = true
-  value = module.buildkit.client-cert-key
+  value     = module.buildkit.client-cert-key
 }
 
 output "ca-bundle" {

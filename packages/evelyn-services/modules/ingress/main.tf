@@ -1,11 +1,11 @@
 resource "kubernetes_ingress" "evelyn-services" {
   metadata {
-    name = "evelyn-services"
+    name      = "evelyn-services"
     namespace = var.namespace
 
     annotations = {
       "traefik.ingress.kubernetes.io/frontend-entry-points" = "websecure"
-      "traefik.ingress.kubernetes.io/router.tls" = "true"
+      "traefik.ingress.kubernetes.io/router.tls"            = "true"
     }
   }
   spec {
@@ -58,7 +58,7 @@ resource "kubernetes_ingress" "evelyn-services" {
       }
     }
     tls {
-      hosts = [ var.external_shared_hostname ]
+      hosts       = [var.external_shared_hostname]
       secret_name = kubernetes_secret.ingress-tls.metadata.0.name
     }
   }
@@ -66,10 +66,10 @@ resource "kubernetes_ingress" "evelyn-services" {
 
 resource "vault_pki_secret_backend_cert" "ingress" {
   backend = "pki_intermediate"
-  name = "evelyn-internal-role"
+  name    = "evelyn-internal-role"
 
   auto_renew = true
-  ttl = "720h"
+  ttl        = "720h"
 
   format = "pem"
 
@@ -78,7 +78,7 @@ resource "vault_pki_secret_backend_cert" "ingress" {
 
 resource "kubernetes_secret" "ingress-tls" {
   metadata {
-    name = "ingress-tls"
+    name      = "ingress-tls"
     namespace = var.namespace
   }
 

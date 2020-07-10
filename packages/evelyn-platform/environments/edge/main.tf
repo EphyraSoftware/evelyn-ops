@@ -19,7 +19,7 @@ module "namespace" {
 module "rabbitmq" {
   source = "../../modules/rabbitmq"
 
-  namespace = module.namespace.namespace
+  namespace         = module.namespace.namespace
   rabbitmq_hostname = local.rabbitmq_hostname
 }
 
@@ -32,7 +32,7 @@ module "mongodb" {
 module "keycloak" {
   source = "../../modules/keycloak"
 
-  namespace = module.namespace.namespace
+  namespace         = module.namespace.namespace
   keycloak_hostname = "keycloak.evelyn.internal"
 }
 
@@ -40,5 +40,5 @@ module "mailhog" {
   source = "../../modules/mailhog"
 
   namespace = module.namespace.namespace
-  hostname = "mailhog.evelyn.internal"
+  hostname  = "mailhog.evelyn.internal"
 }

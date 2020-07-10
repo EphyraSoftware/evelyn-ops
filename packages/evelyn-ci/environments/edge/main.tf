@@ -8,17 +8,17 @@ module "registry" {
   source = "../../modules/registry"
 
   namespace = module.namespace.namespace
-  hostname = "registry.evelyn.internal"
+  hostname  = "registry.evelyn.internal"
 }
 
 module "buildkit" {
   source = "../../modules/buildkitd"
 
-  namespace = module.namespace.namespace
+  namespace        = module.namespace.namespace
   ingress_hostname = "buildkit.evelyn.internal"
 
-  registry = module.registry.registry-hostname
-  registry_email = "${module.registry.admin-username}@evelyn.internal"
+  registry          = module.registry.registry-hostname
+  registry_email    = "${module.registry.admin-username}@evelyn.internal"
   registry_username = module.registry.admin-username
   registry_password = module.registry.admin-password
 }

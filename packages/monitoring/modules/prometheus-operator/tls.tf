@@ -1,9 +1,9 @@
 resource "vault_pki_secret_backend_cert" "grafana" {
   backend = "pki_intermediate"
-  name = "evelyn-internal-role"
+  name    = "evelyn-internal-role"
 
   auto_renew = true
-  ttl = "720h"
+  ttl        = "720h"
 
   format = "pem"
 
@@ -12,7 +12,7 @@ resource "vault_pki_secret_backend_cert" "grafana" {
 
 resource "kubernetes_secret" "grafana-tls" {
   metadata {
-    name = "grafana-tls"
+    name      = "grafana-tls"
     namespace = var.namespace
   }
 

@@ -1,6 +1,6 @@
 resource "tls_private_key" "ca" {
   algorithm = "RSA"
-  rsa_bits = 2048
+  rsa_bits  = 2048
 }
 
 resource "tls_self_signed_cert" "ca" {
@@ -23,7 +23,7 @@ resource "tls_self_signed_cert" "ca" {
 
 resource "tls_private_key" "vault" {
   algorithm = tls_self_signed_cert.ca.key_algorithm
-  rsa_bits = 2048
+  rsa_bits  = 2048
 }
 
 resource "tls_cert_request" "vault" {
@@ -57,7 +57,7 @@ resource "tls_locally_signed_cert" "vault" {
 
 resource "kubernetes_secret" "vault-tls" {
   metadata {
-    name = "vault-tls"
+    name      = "vault-tls"
     namespace = kubernetes_namespace.vault.metadata.0.name
   }
 

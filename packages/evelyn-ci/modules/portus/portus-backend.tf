@@ -1,6 +1,6 @@
 resource "kubernetes_deployment" "portus-backend" {
   metadata {
-    name = "portus-backend"
+    name      = "portus-backend"
     namespace = var.namespace
 
     labels = {
@@ -24,19 +24,19 @@ resource "kubernetes_deployment" "portus-backend" {
       }
       spec {
         container {
-          name = "portus-backend"
-          image = "opensuse/portus:head"
+          name              = "portus-backend"
+          image             = "opensuse/portus:head"
           image_pull_policy = "IfNotPresent"
 
           command = ["/bin/sh", "/init"]
 
           env {
-            name = "CCONFIG_PREFIX"
+            name  = "CCONFIG_PREFIX"
             value = "PORTUS"
           }
 
           env {
-            name = "PORTUS_BACKGROUND"
+            name  = "PORTUS_BACKGROUND"
             value = "true"
           }
 
@@ -53,9 +53,9 @@ resource "kubernetes_deployment" "portus-backend" {
           }
 
           volume_mount {
-            name = "certificates"
+            name       = "certificates"
             mount_path = "/certificates"
-            read_only = true
+            read_only  = true
           }
         }
 

@@ -15,7 +15,7 @@ resource "kubernetes_secret" "evelyn-registry" {
           email    = var.registry_email
           username = data.vault_generic_secret.registry-credentials.data["username"]
           password = data.vault_generic_secret.registry-credentials.data["password"]
-          auth     = base64encode(join(":", [
+          auth = base64encode(join(":", [
             data.vault_generic_secret.registry-credentials.data["username"],
             data.vault_generic_secret.registry-credentials.data["password"]
           ]))

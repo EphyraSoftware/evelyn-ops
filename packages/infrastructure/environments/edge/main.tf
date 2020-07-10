@@ -11,5 +11,5 @@ module "nfs" {
   source = "../../modules/nfs"
 
   nfs-server-address = "192.168.1.32"
-  nfs-exported-path = "/nfs"
+  nfs-exported-path  = "/nfs"
 }

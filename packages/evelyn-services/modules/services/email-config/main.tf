@@ -8,41 +8,41 @@ resource "rabbitmq_user" "email" {
 }
 
 resource "rabbitmq_permissions" "email" {
-  user = rabbitmq_user.email.name
+  user  = rabbitmq_user.email.name
   vhost = var.vhost_name
 
   permissions {
     configure = ".*"
-    write = ".*"
-    read = ".*"
+    write     = ".*"
+    read      = ".*"
   }
 }
 
 resource "rabbitmq_exchange" "email" {
-  name = "user-messaging-exchange"
+  name  = "user-messaging-exchange"
   vhost = rabbitmq_permissions.email.vhost
 
   settings {
-    type = "topic"
-    durable = true
+    type        = "topic"
+    durable     = true
     auto_delete = false
   }
 }
 
 resource "rabbitmq_queue" "email" {
-  name = "send-mail"
+  name  = "send-mail"
   vhost = rabbitmq_permissions.email.vhost
 
   settings {
-    durable = true
+    durable     = true
     auto_delete = false
   }
 }
 
 resource "rabbitmq_binding" "email" {
-  source = rabbitmq_exchange.email.name
-  vhost = var.vhost_name
-  destination = rabbitmq_queue.email.name
+  source           = rabbitmq_exchange.email.name
+  vhost            = var.vhost_name
+  destination      = rabbitmq_queue.email.name
   destination_type = "queue"
-  routing_key = "none"
+  routing_key      = "none"
 }

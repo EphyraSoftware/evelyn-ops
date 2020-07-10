@@ -1,9 +1,9 @@
 variable "namespace" {
-  type = string
+  type        = string
   description = "The namespace to deploy to"
 }
 
 variable "rabbitmq_hostname" {
-  type = string
+  type        = string
   description = "The hostname for rabbitmq ingress"
 }

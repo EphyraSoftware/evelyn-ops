@@ -1,9 +1,9 @@
 resource "vault_pki_secret_backend_cert" "rabbitmq" {
   backend = "pki_intermediate"
-  name = "evelyn-internal-role"
+  name    = "evelyn-internal-role"
 
   auto_renew = true
-  ttl = "720h"
+  ttl        = "720h"
 
   format = "pem"
 
@@ -12,7 +12,7 @@ resource "vault_pki_secret_backend_cert" "rabbitmq" {
 
 resource "kubernetes_secret" "rabbitmq-tls" {
   metadata {
-    name = "rabbitmq-tls"
+    name      = "rabbitmq-tls"
     namespace = var.namespace
   }
 

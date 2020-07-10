@@ -1,4 +1,4 @@
 variable "hostname" {
-  type = string
+  type        = string
   description = "THe hostname to expose"
 }

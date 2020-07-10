@@ -35,3 +35,10 @@ module "keycloak" {
   namespace = module.namespace.namespace
   keycloak_hostname = "keycloak.evelyn.internal"
 }
+
+module "mailhog" {
+  source = "../../modules/mailhog"
+
+  namespace = module.namespace.namespace
+  hostname = "mailhog.evelyn.internal"
+}

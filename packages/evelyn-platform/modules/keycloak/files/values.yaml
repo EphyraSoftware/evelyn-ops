@@ -298,10 +298,10 @@ keycloak:
   ## Persistence configuration
   persistence:
     # If true, the Postgres chart is deployed
-    deployPostgres: false
+    deployPostgres: true
 
     # The database vendor. Can be either "postgres", "mysql", "mariadb", or "h2"
-    dbVendor: h2
+    dbVendor: postgres
 
     ## The following values only apply if "deployPostgres" is set to "false"
     dbName: keycloak
@@ -343,7 +343,7 @@ postgresql:
   persistence:
     ## Enable PostgreSQL persistence using Persistent Volume Claims.
     ##
-    enabled: false
+    enabled: true
 
 test:
   enabled: true

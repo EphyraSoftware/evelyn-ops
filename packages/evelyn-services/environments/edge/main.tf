@@ -4,7 +4,7 @@ locals {
   image_registry    = "registry.evelyn.internal"
 
   // mongodb://mongodb0.example.com:27017,mongodb1.example.com:27017,mongodb2.example.com:27017/?replicaSet=myRepl
-  mongodb_connection_uri = "mongodb://mongodb-replicaset-0.evelyn-platform:27017,mongodb-replicaset-1.evelyn-platform:27017,mongodb-replicaset-2.evelyn-platform:27017/?replicaSet=rs0"
+  mongodb_connection_uri = "mongodb://mongodb-replicaset-0.mongodb-replicaset.evelyn-platform:27017,mongodb-replicaset-1.mongodb-replicaset.evelyn-platform:27017,mongodb-replicaset-2.mongodb-replicaset.evelyn-platform:27017/?replicaSet=rs0"
   rabbitmq_host          = "rabbitmq.evelyn-platform"
   mail_host              = "mailhog.evelyn-platform"
 }

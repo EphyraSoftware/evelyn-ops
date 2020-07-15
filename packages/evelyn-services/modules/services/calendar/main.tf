@@ -73,10 +73,6 @@ resource "kubernetes_config_map" "calendar-service-config" {
 
   data = {
     SPRING_PROFILES_ACTIVE   = join(",", var.spring_profiles_active)
-    RABBITMQ_HOST            = var.rabbitmq_host
-    RABBITMQ_PORT            = var.rabbitmq_port
-    RABBITMQ_USERNAME        = var.rabbitmq_username
-    RABBITMQ_PASSWORD        = var.rabbitmq_password
     MONGO_CONNECTION_URI     = var.mongo_connection_uri
     KEYCLOAK_AUTH_URL        = var.keycloak_auth_url
     PROFILE_SERVICE_BASE_URL = var.profile_service_base_url

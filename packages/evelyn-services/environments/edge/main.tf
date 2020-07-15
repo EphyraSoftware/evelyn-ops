@@ -57,6 +57,9 @@ module "service-profile" {
   image_pull_secret    = module.common.pull_secret
   mongo_connection_uri = local.mongodb_connection_uri
   rabbitmq_host        = local.rabbitmq_host
+  # For some reason this authentication doesn't work, so root credentials it is... sadly
+  rabbitmq_username        = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-user     # module.service-email-config.email-user
+  rabbitmq_password        = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-password # module.service-email-config.email-password
 }
 
 module "service-group" {
@@ -100,10 +103,6 @@ module "service-calendar" {
   image_pull_policy    = local.image_pull_policy
   image_pull_secret    = module.common.pull_secret
   mongo_connection_uri = local.mongodb_connection_uri
-  rabbitmq_host        = local.rabbitmq_host
-  # For some reason this authentication doesn't work, so root credentials it is... sadly
-  rabbitmq_username        = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-user     # module.service-email-config.email-user
-  rabbitmq_password        = data.terraform_remote_state.evelyn-platform.outputs.rabbitmq-management-password # module.service-email-config.email-password
   profile_service_base_url = "https://${module.service-profile.service_name}.${local.namespace}.svc.cluster.local:8080"
 }
 

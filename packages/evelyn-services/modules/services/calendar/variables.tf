@@ -36,26 +36,6 @@ variable spring_profiles_active {
   default = ["prod"]
 }
 
-variable rabbitmq_host {
-  description = "The RabbitMQ host."
-  type        = string
-}
-
-variable rabbitmq_port {
-  description = "The RabbitMQ port."
-  type        = string
-
-  default = "5672"
-}
-
-variable "rabbitmq_username" {
-  type = string
-}
-
-variable "rabbitmq_password" {
-  type = string
-}
-
 variable mongo_connection_uri {
   description = "The MongoDB connection URI."
   type        = string

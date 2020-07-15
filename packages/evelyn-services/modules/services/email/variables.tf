@@ -47,7 +47,7 @@ variable mail_host {
 variable mail_port {
   type = string
 
-  default = "8025"
+  default = "1025"
 }
 
 variable mail_username {

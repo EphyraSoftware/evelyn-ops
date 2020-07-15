@@ -48,6 +48,14 @@ variable rabbitmq_port {
   default = "5672"
 }
 
+variable "rabbitmq_username" {
+  type = string
+}
+
+variable "rabbitmq_password" {
+  type = string
+}
+
 variable mongo_connection_uri {
   description = "The MongoDB connection URI."
   type        = string
